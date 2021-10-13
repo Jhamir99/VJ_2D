@@ -81,8 +81,12 @@ void Player::update(int deltaTime)
 	
 	if(bJumping)
 	{
-		jumpAngle += JUMP_ANGLE_STEP;
-		if(jumpAngle == 180)
+		if (invert) 
+			jumpAngle -= JUMP_ANGLE_STEP;
+		else
+			jumpAngle += JUMP_ANGLE_STEP;
+
+		if((jumpAngle == 180) || (jumpAngle == -180))
 		{
 			bJumping = false;
 			posPlayer.y = startY;
@@ -90,22 +94,44 @@ void Player::update(int deltaTime)
 		else
 		{
 			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+			if (jumpAngle > 90) {
+				if (invert)
+					bJumping = !map->collisionMoveUp(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+				else
+					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+			}
+				
 		}
 	}
 	else
 	{
-		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
-		{
-			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
+		//segundo jugador
+		if (invert) {
+			posPlayer.y -= FALL_STEP;
+			if (map->collisionMoveUp(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
 			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					bJumping = true;
+					jumpAngle = 0;
+					startY = posPlayer.y;
+				}
 			}
 		}
+		//primer jugador
+		else {
+			posPlayer.y += FALL_STEP;
+			if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+			{
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					bJumping = true;
+					jumpAngle = 0;
+					startY = posPlayer.y;
+				}
+			}
+		}
+		
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -119,6 +145,11 @@ void Player::render()
 void Player::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;
+}
+
+void Player::secondPlayer()
+{
+	invert = true;
 }
 
 void Player::setPosition(const glm::vec2 &pos)

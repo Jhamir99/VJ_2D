@@ -20,9 +20,13 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+
+	void secondPlayer();
 	
 private:
 	bool bJumping;
+	bool invert; //para que el segundo jugador caiga hacia arriba
+
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
