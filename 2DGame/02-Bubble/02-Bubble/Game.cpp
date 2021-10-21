@@ -67,6 +67,26 @@ bool Game::getSpecialKey(int key) const
 	return specialKeys[key];
 }
 
+void Game::showMenu()
+{
+	scene.showMenu();
+}
+
+void Game::showInstructions()
+{
+	scene.showInstructions();
+}
+
+void Game::showGame()
+{
+	scene.showGame();
+}
+
+void Game::showCredits()
+{
+	scene.showCredits();
+};
+
 
 
 

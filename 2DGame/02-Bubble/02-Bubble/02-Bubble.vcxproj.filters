@@ -42,7 +42,10 @@
     <ClInclude Include="TileMap.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Arrow.h">
+      </ClInclude>
     <ClInclude Include="Player2.h">
+      </ClInclude>
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,7 +77,10 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Player2.cpp">
+    <ClCompile Include="Arrow.cpp">
+    </ClCompile>
+    <ClCompile Include="Player2.cpp">4
+    </ClCompile>
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

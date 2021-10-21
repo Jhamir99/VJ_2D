@@ -34,6 +34,39 @@ Scene::~Scene()
 
 void Scene::init()
 {
+	initGame();
+	initMenu();
+	initInstructions();
+	initCredits();
+	currentTime = 0.0f;
+	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+}
+
+void Scene::initMenu() {
+	bMenu = true;
+	bArrow = true;
+	spritesheet.loadFromFile("images/menu.png", TEXTURE_PIXEL_FORMAT_RGB);
+	menu = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &spritesheet, &texProgram);
+
+	texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	arrow = new Arrow();
+	arrow->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	arrow->setPosition(glm::vec2(10 * map->getTileSize(), (15 * map->getTileSize())-75));
+}
+
+void Scene::initInstructions() {
+	bInstructions = false;
+	texIns.loadFromFile("images/instructions.png", TEXTURE_PIXEL_FORMAT_RGB);
+	instructions = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texIns, &texProgram);
+}
+
+void Scene::initCredits() {
+	bCredits = false;
+	texCred.loadFromFile("images/credits.png", TEXTURE_PIXEL_FORMAT_RGB);
+	credits = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texCred, &texProgram);
+}
+
+void Scene::initGame() {
 	initShaders();
 	map = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
@@ -57,7 +90,12 @@ void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
-	player2->update(deltaTime);
+  player2->update(deltaTime);
+	if (bMenu) menu->update(deltaTime);
+	if (bArrow) arrow->update(deltaTime);
+	if (bCredits) credits->update(deltaTime);
+	if (bInstructions) instructions->update(deltaTime);
+	
 }
 
 void Scene::render()
@@ -70,8 +108,13 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+
 	map->render();
 	player->render();
+	if(bMenu) menu->render();
+	if(bArrow) arrow->render();
+	if(bCredits) credits->render();
+	if(bInstructions) instructions->render();
 	player2->render();
 }
 
@@ -104,6 +147,33 @@ void Scene::initShaders()
 	vShader.free();
 	fShader.free();
 }
+
+
+
+void Scene::showMenu()
+{
+	bMenu = true;
+	bArrow = true;
+	bInstructions = false;
+	bCredits = false;
+}
+
+void Scene::showInstructions()
+{
+	bInstructions = true;
+}
+
+void Scene::showGame()
+{
+	bMenu = false;
+	bArrow = false;
+}
+
+void Scene::showCredits()
+{
+	bCredits = true;
+};
+
 
 
 

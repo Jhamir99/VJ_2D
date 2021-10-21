@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Arrow.h"
 #include "Player2.h"
 
 // Scene contains all the entities of our game.
@@ -20,11 +21,23 @@ public:
 	~Scene();
 
 	void init();
+	void initMenu();
+	void initInstructions();
+	void initCredits();
+	void initGame();
 	void update(int deltaTime);
 	void render();
 
+
+	//Custom
+	void showMenu();
+	void showInstructions();
+	void showGame();
+	void showCredits();
+
 private:
 	void initShaders();
+
 
 private:
 	TileMap *map;
@@ -34,7 +47,10 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-
+	Sprite *menu, *instructions, *credits;
+	Texture spritesheet, texHand, texIns, texCred;
+	Arrow *arrow;
+	bool bMenu, bArrow, bInstructions, bCredits;
 };
 
 
