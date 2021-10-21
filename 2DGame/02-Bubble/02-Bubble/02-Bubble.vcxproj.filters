@@ -43,6 +43,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Arrow.h">
+      </ClInclude>
+    <ClInclude Include="Player2.h">
+      </ClInclude>
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -75,6 +78,9 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="Arrow.cpp">
+    </ClCompile>
+    <ClCompile Include="Player2.cpp">4
+    </ClCompile>
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

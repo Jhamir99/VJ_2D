@@ -7,7 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Arrow.h"
-
+#include "Player2.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -42,6 +42,8 @@ private:
 private:
 	TileMap *map;
 	Player *player;
+	Player2 *player2;
+
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;

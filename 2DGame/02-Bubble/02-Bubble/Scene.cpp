@@ -8,14 +8,17 @@
 #define SCREEN_X 32
 #define SCREEN_Y 16
 
-#define INIT_PLAYER_X_TILES 4
-#define INIT_PLAYER_Y_TILES 25
+#define INIT_PLAYER_X_TILES 8
+#define INIT_PLAYER_Y_TILES 10
 
+#define INIT_PLAYER2_X_TILES 8
+#define INIT_PLAYER2_Y_TILES 20
 
 Scene::Scene()
 {
 	map = NULL;
 	player = NULL;
+	player2 = NULL;
 }
 
 Scene::~Scene()
@@ -24,6 +27,8 @@ Scene::~Scene()
 		delete map;
 	if(player != NULL)
 		delete player;
+	if (player2 != NULL)
+		delete player2;
 }
 
 
@@ -63,11 +68,20 @@ void Scene::initCredits() {
 
 void Scene::initGame() {
 	initShaders();
-	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	//player1
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
+
+	//player2
+	player2 = new Player2();
+	player2->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	player2->setPosition(glm::vec2(INIT_PLAYER2_X_TILES * map->getTileSize(), INIT_PLAYER2_Y_TILES * map->getTileSize()));
+	player2->setTileMap(map);
+
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
@@ -76,10 +90,12 @@ void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+  player2->update(deltaTime);
 	if (bMenu) menu->update(deltaTime);
 	if (bArrow) arrow->update(deltaTime);
 	if (bCredits) credits->update(deltaTime);
 	if (bInstructions) instructions->update(deltaTime);
+	
 }
 
 void Scene::render()
@@ -99,6 +115,7 @@ void Scene::render()
 	if(bArrow) arrow->render();
 	if(bCredits) credits->render();
 	if(bInstructions) instructions->render();
+	player2->render();
 }
 
 void Scene::initShaders()
