@@ -87,7 +87,8 @@ void Game::showCredits()
 	scene.showCredits();
 };
 
-
-
+void Game::resetPlayer() {
+	scene.init();
+}
 
 

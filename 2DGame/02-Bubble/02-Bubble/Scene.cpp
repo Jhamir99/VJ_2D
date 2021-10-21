@@ -89,8 +89,8 @@ void Scene::initGame() {
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
-	player->update(deltaTime);
-  player2->update(deltaTime);
+	if (!bMenu) player->update(deltaTime);
+	if (!bMenu) player2->update(deltaTime);
 	if (bMenu) menu->update(deltaTime);
 	if (bArrow) arrow->update(deltaTime);
 	if (bCredits) credits->update(deltaTime);
@@ -110,12 +110,12 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	map->render();
-	player->render();
+	if(!bMenu) player->render();
+	if (!bMenu) player2->render();
 	if(bMenu) menu->render();
 	if(bArrow) arrow->render();
 	if(bCredits) credits->render();
 	if(bInstructions) instructions->render();
-	player2->render();
 }
 
 void Scene::initShaders()
@@ -173,7 +173,5 @@ void Scene::showCredits()
 {
 	bCredits = true;
 };
-
-
 
 

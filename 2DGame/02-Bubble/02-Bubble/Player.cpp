@@ -119,6 +119,8 @@ void Player::update(int deltaTime)
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+
+	if (posPlayer.y > 240) Game::instance().resetPlayer();
 }
 
 void Player::render()
