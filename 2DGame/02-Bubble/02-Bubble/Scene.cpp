@@ -3,6 +3,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 #include "Game.h"
+#include <Windows.h>
+#include <MMSystem.h>
+
 
 
 #define SCREEN_X 32
@@ -34,6 +37,9 @@ Scene::~Scene()
 
 void Scene::init()
 {
+	if(!bMusic) PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+	bMusic = true;
+
 	initGame();
 	initMenu();
 	initInstructions();
@@ -68,7 +74,7 @@ void Scene::initCredits() {
 
 void Scene::initGame() {
 	initShaders();
-	map = TileMap::createTileMap("levels/level02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	//player1
 	player = new Player();

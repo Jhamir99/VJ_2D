@@ -50,7 +50,7 @@ private:
 	Sprite *menu, *instructions, *credits;
 	Texture spritesheet, texHand, texIns, texCred;
 	Arrow *arrow;
-	bool bMenu, bArrow, bInstructions, bCredits;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false;
 };
 
 
