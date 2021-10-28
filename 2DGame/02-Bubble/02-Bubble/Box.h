@@ -1,5 +1,5 @@
-#ifndef _PLAYER2_INCLUDE
-#define _PLAYER2_INCLUDE
+#ifndef _BOX_INCLUDE
+#define _BOX_INCLUDE
 
 
 #include "Sprite.h"
@@ -10,7 +10,7 @@
 // all properties it needs to track its movement, jumping, and collisions.
 
 
-class Player2
+class Box
 {
 
 public:
@@ -23,16 +23,14 @@ public:
 
 
 private:
-	bool bJumping;
+
 	glm::ivec2 tileMapDispl, posPlayer;
-	int startY;
-	float Vjump;
+	int Vjump, startY;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
-
 };
 
 
-#endif // _PLAYER2_INCLUDE
+#endif // _BOX_INCLUDE
 #pragma once

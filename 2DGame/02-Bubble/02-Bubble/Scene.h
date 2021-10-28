@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Arrow.h"
 #include "Player2.h"
+#include "Box.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -43,6 +44,7 @@ private:
 	TileMap *map;
 	Player *player;
 	Player2 *player2;
+	Box* box;
 
 	ShaderProgram texProgram;
 	float currentTime;

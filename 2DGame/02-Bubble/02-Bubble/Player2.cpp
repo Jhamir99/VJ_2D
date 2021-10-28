@@ -6,8 +6,8 @@
 #include "Game.h"
 
 
-#define JUMP_SPEED 13
-#define JUMP_A 1
+#define JUMP_SPEED 14
+#define JUMP_A 0.7
 #define FALL_STEP 4
 
 
@@ -96,7 +96,7 @@ void Player2::update(int deltaTime)
 		}
 		else {
 			Vjump -= JUMP_A;
-			posPlayer.y += Vjump;
+			posPlayer.y += int(Vjump);
 
 			if (map->collisionMoveDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
 				Vjump = 0;
@@ -123,7 +123,7 @@ void Player2::update(int deltaTime)
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	if (posPlayer.y < 240) Game::instance().resetPlayer();
+	//if (posPlayer.y < 240) Game::instance().resetPlayer();
 }
 
 void Player2::render()

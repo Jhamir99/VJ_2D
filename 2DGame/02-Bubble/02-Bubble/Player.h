@@ -26,7 +26,8 @@ private:
 	bool bJumping;
 
 	glm::ivec2 tileMapDispl, posPlayer;
-	int Vjump, startY;
+	int startY;
+	float Vjump;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
