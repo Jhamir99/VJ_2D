@@ -90,19 +90,19 @@ void Player2::update(int deltaTime)
 	{
 		if (sprite->animation() != JUMP)
 			sprite->changeAnimation(JUMP);
-		if (Vjump <= -JUMP_SPEED) {
-			posPlayer.y = startY;
-			bJumping = false;
-		}
-		else {
+		//if (Vjump <= -JUMP_SPEED) {
+		//	posPlayer.y = startY;
+		//	bJumping = false;
+		//}
+		//else {
 			Vjump -= JUMP_A;
 			posPlayer.y += int(Vjump);
 
-			if (map->collisionMoveDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
+			if (map->collisionJumpDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump))
 				Vjump = 0;
 
-			bJumping = !map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y);
-		}
+			bJumping = !map->collisionJumpUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump);
+		//}
 		
 	}
 	else
