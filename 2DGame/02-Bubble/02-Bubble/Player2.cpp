@@ -6,8 +6,8 @@
 #include "Game.h"
 
 
-#define JUMP_SPEED 13
-#define JUMP_A 1
+#define JUMP_SPEED 14
+#define JUMP_A 0.7
 #define FALL_STEP 4
 
 
@@ -90,19 +90,19 @@ void Player2::update(int deltaTime)
 	{
 		if (sprite->animation() != JUMP)
 			sprite->changeAnimation(JUMP);
-		if (Vjump <= -JUMP_SPEED) {
-			posPlayer.y = startY;
-			bJumping = false;
-		}
-		else {
+		//if (Vjump <= -JUMP_SPEED) {
+		//	posPlayer.y = startY;
+		//	bJumping = false;
+		//}
+		//else {
 			Vjump -= JUMP_A;
-			posPlayer.y += Vjump;
+			posPlayer.y += int(Vjump);
 
-			if (map->collisionMoveDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
+			if (map->collisionJumpDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump))
 				Vjump = 0;
 
-			bJumping = !map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y);
-		}
+			bJumping = !map->collisionJumpUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump);
+		//}
 		
 	}
 	else
@@ -127,6 +127,7 @@ void Player2::update(int deltaTime)
 		Game::instance().resetPlayer();
 		Game::instance().playDeathSound();
 	}
+	//if (posPlayer.y < 240) Game::instance().resetPlayer();
 }
 
 void Player2::render()

@@ -184,11 +184,12 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 
 bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const
 {
-	int x0, x1, y;
+	int x0, x1, y, y2;
 	
 	x0 = pos.x / tileSize;
 	x1 = (pos.x + size.x - 1) / tileSize;
 	y = (pos.y + size.y - 1) / tileSize;
+
 	for(int x=x0; x<=x1; x++)
 	{
 		if(map[y*mapSize.x+x] != 0)
@@ -204,27 +205,77 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	return false;
 }
 
+bool TileMap::collisionJumpDown(const glm::ivec2& pos, const glm::ivec2& size, int* posY, float vspeed) const
+{
+	int x0, x1, y, y2;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	y2 = (pos.y + int(vspeed/2) + size.y - 1) / tileSize;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y2 * mapSize.x + x] != 0) {
+				*posY = tileSize * y2 - size.y;
+				return true;
+		}
+		else if (map[y * mapSize.x + x] != 0)
+		{
+				*posY = tileSize * y - size.y;
+				return true;
+		}
+
+	}
+
+	return false;
+}
+
 bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
 {
-	int x0, x1, y;
+	int x0, x1, y, y2;
 
 	x0 = pos.x / tileSize;
 	x1 = (pos.x + size.x - 1) / tileSize;
 	y = (pos.y) / tileSize;
+
 	for (int x = x0; x <= x1; x++)
 	{
 		if (map[y * mapSize.x + x] != 0)
 		{
-			//if (*posY - tileSize * y <= 4)
-			//{
-				*posY = tileSize * y + size.y-32;
-				return true;
-			//}
+			*posY = tileSize * y + size.y -16;
+			return true;
 		}
 	}
 
 	return false;
 }
+
+bool TileMap::collisionJumpUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY, float vspeed) const
+{
+	int x0, x1, y, y2;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y) / tileSize;
+	y2 = (pos.y - int(vspeed/2)) / tileSize;
+
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			*posY = tileSize * y + size.y - 16;
+			return true;
+		}
+		else if (map[y2 * mapSize.x + x] != 0) {
+			*posY = tileSize * y2 + size.y - 16;
+			return true;
+
+		}
+	}
+
+	return false;
+}
+
 
 
 
