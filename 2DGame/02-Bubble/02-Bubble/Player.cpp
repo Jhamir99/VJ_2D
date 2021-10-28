@@ -99,17 +99,13 @@ void Player::update(int deltaTime)
 	else
 	{
 		posPlayer.y += FALL_STEP;
-		if (map->collisionMoveDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
+		map->collisionMoveDown(posPlayer, glm::ivec2(48, 48), &posPlayer.y);
+		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 		{
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP))
-			{
-				bJumping = true;
-				Vjump = JUMP_SPEED;
-				startY = posPlayer.y;
-			}
+			bJumping = true;
+			Vjump = JUMP_SPEED;
+			startY = posPlayer.y;
 		}
-
-		
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -133,6 +129,7 @@ void Player::setTileMap(TileMap *tileMap)
 void Player::setPosition(const glm::vec2 &pos)
 {
 	posPlayer = pos;
+	bJumping = false;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 

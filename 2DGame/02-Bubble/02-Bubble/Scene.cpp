@@ -104,9 +104,11 @@ void Scene::initGame() {
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
-	if (!bMenu) player->update(deltaTime);
-	if (!bMenu) player2->update(deltaTime);
-	if (!bMenu) box->update(deltaTime);
+	if (!bMenu) {
+		player->update(deltaTime);
+		player2->update(deltaTime);
+		box->update(deltaTime);
+	}
 	if (bMenu) menu->update(deltaTime);
 	if (bArrow) arrow->update(deltaTime);
 	if (bCredits) credits->update(deltaTime);
