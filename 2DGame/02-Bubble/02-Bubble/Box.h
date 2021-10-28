@@ -21,11 +21,12 @@ public:
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 
-
 private:
 
-	glm::ivec2 tileMapDispl, posPlayer;
+	glm::ivec2 tileMapDispl, posBox;
 	int Vjump, startY;
+	int PosAux;
+	glm::ivec2 posPlayer1, posPlayer2;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;

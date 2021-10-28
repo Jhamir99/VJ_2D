@@ -94,3 +94,22 @@ void Game::resetPlayer() {
 void Game::playDeathSound() {
 	scene.playDeathSound();
 }
+
+glm::ivec2 Game::getPosPlayer1()
+{
+	return scene.getPosPlayer1();
+}
+
+glm::ivec2 Game::getPosPlayer2()
+{
+	return scene.getPosPlayer2();
+}
+
+void Game::setPosition1(const glm::vec2& pos)
+{
+	scene.setPosition1(pos);
+}
+void Game::setPosition2(const glm::vec2& pos)
+{
+	scene.setPosition2(pos);
+}
