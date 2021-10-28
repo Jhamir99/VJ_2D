@@ -38,6 +38,12 @@ public:
 
 	void playDeathSound();
 
+	void setPosition1(const glm::vec2& pos);
+	void setPosition2(const glm::vec2& pos);
+
+	glm::ivec2 getPosPlayer1();
+	glm::ivec2 getPosPlayer2();
+
 private:
 	void initShaders();
 

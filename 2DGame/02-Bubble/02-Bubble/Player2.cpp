@@ -123,11 +123,10 @@ void Player2::update(int deltaTime)
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	if (posPlayer.y < 240) {
+	if (posPlayer.y < 360) {
 		Game::instance().resetPlayer();
 		Game::instance().playDeathSound();
 	}
-	//if (posPlayer.y < 240) Game::instance().resetPlayer();
 }
 
 void Player2::render()
@@ -144,4 +143,9 @@ void Player2::setPosition(const glm::vec2& pos)
 {
 	posPlayer = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+}
+
+glm::ivec2 Player2::getPosition()
+{
+	return posPlayer;
 }

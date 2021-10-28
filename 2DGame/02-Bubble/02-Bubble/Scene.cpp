@@ -195,3 +195,24 @@ void Scene::showCredits()
 void Scene::playDeathSound() {
 	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME);
 }
+
+void Scene::setPosition1(const glm::vec2& pos)
+{
+	player->setPosition(pos);
+}
+
+void Scene::setPosition2(const glm::vec2& pos)
+{
+	player2->setPosition(pos);
+}
+
+glm::ivec2 Scene::getPosPlayer1()
+{
+	return player->getPosition();
+}
+
+glm::ivec2 Scene::getPosPlayer2()
+{
+	return player2->getPosition();
+}
+

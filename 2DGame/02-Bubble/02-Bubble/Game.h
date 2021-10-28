@@ -53,6 +53,11 @@ public:
 
 	void playDeathSound();
 
+	glm::ivec2 getPosPlayer1();
+	glm::ivec2 getPosPlayer2();
+	void setPosition1(const glm::vec2& pos);
+	void setPosition2(const glm::vec2& pos);
+
 private:
 	bool bPlay;                       // Continue to play game?
 	Scene scene;                      // Scene to render
