@@ -91,4 +91,6 @@ void Game::resetPlayer() {
 	scene.init();
 }
 
-
+void Game::playDeathSound() {
+	scene.playDeathSound();
+}

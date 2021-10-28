@@ -35,6 +35,8 @@ public:
 	void showGame();
 	void showCredits();
 
+	void playDeathSound();
+
 private:
 	void initShaders();
 

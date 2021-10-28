@@ -51,6 +51,8 @@ public:
 
 	void resetPlayer();
 
+	void playDeathSound();
+
 private:
 	bool bPlay;                       // Continue to play game?
 	Scene scene;                      // Scene to render

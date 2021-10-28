@@ -74,7 +74,7 @@ void Scene::initCredits() {
 
 void Scene::initGame() {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/lvl1_v2.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	//player1
 	player = new Player();
@@ -180,4 +180,6 @@ void Scene::showCredits()
 	bCredits = true;
 };
 
-
+void Scene::playDeathSound() {
+	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME);
+}
