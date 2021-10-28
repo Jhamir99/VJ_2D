@@ -24,7 +24,7 @@ void Arrow::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	nButtons = 4;
 
 	//espai entre butons
-	spcButtons = 60;
+	spcButtons = 91;
 
 	bJumping = false;
 	spritesheet.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);

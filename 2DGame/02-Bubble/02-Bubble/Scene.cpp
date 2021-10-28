@@ -40,8 +40,7 @@ Scene::~Scene()
 
 void Scene::init()
 {
-	if(!bMusic) PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
-	bMusic = true;
+	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
 
 	initGame();
 	initMenu();
@@ -60,7 +59,7 @@ void Scene::initMenu() {
 	texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	arrow = new Arrow();
 	arrow->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	arrow->setPosition(glm::vec2(10 * map->getTileSize(), (15 * map->getTileSize())-75));
+	arrow->setPosition(glm::vec2(13 * map->getTileSize(), (11 * map->getTileSize())-68));
 }
 
 void Scene::initInstructions() {
@@ -193,5 +192,5 @@ void Scene::showCredits()
 };
 
 void Scene::playDeathSound() {
-	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME);
+	PlaySound(TEXT("audio/oof.wav"), NULL, SND_FILENAME);
 }
