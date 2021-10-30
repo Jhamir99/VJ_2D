@@ -76,8 +76,7 @@ void Scene::initCredits() {
 
 void Scene::initGame() {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl1_v2.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	map = TileMap::createTileMap("levels/level03.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/LEVEL5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	//player1
 	player = new Player();
