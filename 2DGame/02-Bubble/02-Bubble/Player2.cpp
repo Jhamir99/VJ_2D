@@ -90,11 +90,6 @@ void Player2::update(int deltaTime)
 	{
 		if (sprite->animation() != JUMP)
 			sprite->changeAnimation(JUMP);
-		//if (Vjump <= -JUMP_SPEED) {
-		//	posPlayer.y = startY;
-		//	bJumping = false;
-		//}
-		//else {
 			Vjump -= JUMP_A;
 			posPlayer.y += int(Vjump);
 
@@ -102,23 +97,17 @@ void Player2::update(int deltaTime)
 				Vjump = 0;
 
 			bJumping = !map->collisionJumpUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump);
-		//}
-		
 	}
 	else
 	{
 		posPlayer.y -= FALL_STEP;
-		if (map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
+		map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y);
+		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 		{
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP))
-			{
-				bJumping = true;
-				Vjump = JUMP_SPEED;
-				startY = posPlayer.y;
-			}
+			bJumping = true;
+			Vjump = JUMP_SPEED;
+			startY = posPlayer.y;
 		}
-
-
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
@@ -142,6 +131,7 @@ void Player2::setTileMap(TileMap* tileMap)
 void Player2::setPosition(const glm::vec2& pos)
 {
 	posPlayer = pos;
+	bJumping = false;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 

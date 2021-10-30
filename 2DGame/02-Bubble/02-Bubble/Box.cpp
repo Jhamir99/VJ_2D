@@ -22,55 +22,119 @@ void Box::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 
 void Box::update(int deltaTime)
 {
-	posBox.y += FALL_STEP;
-	map->collisionMoveDown(posBox, glm::ivec2(48, 48), &posBox.y);
+	Player_up = false;
 
-	if (posBox.y < 360) {
+	if (posBox.y < 360) { //pot moure player 1
+		posBox.y += FALL_STEP;
+		map->collisionMoveDown(posBox, glm::ivec2(48, 48), &posBox.y);
+
 		PosAux = posPlayer1.x;
 		posPlayer1 = Game::instance().getPosPlayer1();
-		//el player esta movent cap a la dreta ->
-		if (posPlayer1.x - PosAux > 0) {
-			int difx = posBox.x - posPlayer1.x;
-			if (difx < 48 && difx > 0) {
-				//el jugador esta a la mateixa x, comprovem si es troba a dalt
-				int dify = posBox.y - posPlayer1.y;
-				if (dify < 58 && dify > 38) {
-					posPlayer1.y = posBox.y + 48;
+		
+	    //mirem si esta a sobre
+		int difx = posPlayer1.x - posBox.x;
+		if (difx < 44 && difx > -44) {
+			int dify = posBox.y - posPlayer1.y;
+			if (dify < 58 && dify > 25) {
+				if (!Game::instance().getSpecialKey(GLUT_KEY_UP)){
+					posPlayer1.y = posBox.y - 48;
 					Game::instance().setPosition1(posPlayer1);
-				}//comprovem si es troba a la mateixa altura
-				else if (dify < 38 && dify > -5) {
-					posBox.x += 2;
-					if (map->collisionMoveRight(posBox, glm::ivec2(48, 48))) {
-						posPlayer1.x -= 2;
-						posBox.x -= 2;
-						Game::instance().setPosition1(posPlayer1);
-					}
+					Player_up = true;
+				}
+				else if (dify < 43) {
+					posPlayer1.y = posBox.y - 48;
+					Game::instance().setPosition1(posPlayer1);
+					Player_up = true;
 				}
 			}
 		}
-		//el player esta movent cap a la esquerra <-
-		else if (posPlayer1.x - PosAux < 0) {
-			int difx = posPlayer1.x - posBox.x;
-			if (difx < 48 && difx > 0) {
-				//el jugador esta a la mateixa x, comprovem si es troba a dalt
-				int dify = posBox.y - posPlayer1.y;
-				if (dify < 58 && dify > 38) {
-					posPlayer1.y = posBox.y + 48;
-					Game::instance().setPosition1(posPlayer1);
-				}
-				else if (dify < 38 && dify > -5) {
-					posBox.x -= 2;
-					if (map->collisionMoveLeft(posBox, glm::ivec2(48, 48))) {
-						posPlayer1.x += 2;
+		if (difx < 48 && difx > -48 && !Player_up) {
+			int dify = posBox.y - posPlayer1.y;
+			if (dify < 38 && dify > -5) {
+				//el player esta movent cap a la dreta ->
+				if (posPlayer1.x - PosAux > 0) {
+					difx = posBox.x - posPlayer1.x;
+					if (difx < 48 && difx > -4) {
+						//el jugador esta tocant la caixa
 						posBox.x += 2;
-						Game::instance().setPosition1(posPlayer1);
+						if (map->collisionMoveRight(posBox, glm::ivec2(48, 48))) {
+							posPlayer1.x -= 2;
+							posBox.x -= 2;
+							Game::instance().setPosition1(posPlayer1);
+						}
+					}
+				}
+				//el player esta movent cap a la esquerra <-
+				else if(PosAux - posPlayer1.x > 0){
+					if (difx < 48 && difx > -4) {
+						//el jugador esta tocant la caixa
+						posBox.x -= 2;
+						if (map->collisionMoveLeft(posBox, glm::ivec2(48, 48))) {
+							posPlayer1.x += 2;
+							posBox.x += 2;
+							Game::instance().setPosition1(posPlayer1);
+							
+						}
 					}
 				}
 			}
 		}
 	}
-	else {
+	else { //pot moure player 2
+		posBox.y -= FALL_STEP;
+		map->collisionMoveUp(posBox, glm::ivec2(48, 48), &posBox.y);
+		PosAux = posPlayer2.x;
 		posPlayer2 = Game::instance().getPosPlayer2();
+
+		//mirem si esta a sobre
+		int difx = posPlayer2.x - posBox.x;
+		if (difx < 44 && difx > -44) {
+			int dify = posPlayer2.y - posBox.y;
+			if (dify < 58 && dify > 25) {
+				if (!Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					posPlayer2.y = posBox.y + 48;
+					Game::instance().setPosition2(posPlayer2);
+					Player_up = true;
+				}
+				else if (dify < 43) {
+					posPlayer2.y = posBox.y + 48;
+					Game::instance().setPosition2(posPlayer2);
+					Player_up = true;
+				}
+			}
+		}
+		else if(difx < 48 && difx > -48 && !Player_up){
+			int dify = posPlayer2.y - posBox.y;
+			if (dify < 38 && dify > -5) {
+				//el player esta movent cap a la dreta ->
+				if (posPlayer2.x - PosAux > 0) {
+					difx = posBox.x - posPlayer2.x;
+					if (difx < 48 && difx > -4) {
+						//el jugador esta tocant la caixa
+						posBox.x += 2;
+						if (map->collisionMoveRight(posBox, glm::ivec2(48, 48))) {
+							posPlayer2.x -= 2;
+							posBox.x -= 2;
+							Game::instance().setPosition2(posPlayer2);
+						}
+					}
+				}
+				//el player esta movent cap a la esquerra <-
+				else if (PosAux - posPlayer2.x > 0) {
+					if (difx < 48 && difx > -4) {
+						//el jugador esta tocant la caixa
+						posBox.x -= 2;
+						if (map->collisionMoveLeft(posBox, glm::ivec2(48, 48))) {
+							posPlayer2.x += 2;
+							posBox.x += 2;
+							Game::instance().setPosition2(posPlayer2);
+
+						}
+					}
+				}
+			}
+		}
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBox.x), float(tileMapDispl.y + posBox.y)));
