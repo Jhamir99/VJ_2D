@@ -105,8 +105,14 @@ void Scene::initGame() {
 
 
 	//Position goals
-	posGoals1 = glm::ivec2(map->getTileSize() * 27, map->getTileSize() * 5);
-	posGoals2 = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT-(map->getTileSize() * 8));
+	posGoals1 = vector<glm::ivec2>(LEVEL_MAX);
+	posGoals2 = vector<glm::ivec2>(LEVEL_MAX);
+
+	posGoals1[0] = glm::ivec2(map->getTileSize() * 27, map->getTileSize() * 5);
+	posGoals2[0] = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT-(map->getTileSize() * 8));
+
+	posGoals1[1] = glm::ivec2(map->getTileSize() * 11, map->getTileSize() * 7);
+	posGoals2[1] = glm::ivec2(map->getTileSize() * 16, SCREEN_HEIGHT - (map->getTileSize() * 11));
 }
 
 void Scene::update(int deltaTime)
@@ -232,7 +238,7 @@ glm::ivec2 Scene::getPosPlayer2()
 
 
 bool Scene::goal() {
-	return aprox(getPosPlayer1(), posGoals1) && aprox(getPosPlayer2(), posGoals2);
+	return aprox(getPosPlayer1(), posGoals1[level-1]) && aprox(getPosPlayer2(), posGoals2[level-1]);
 }
 
 bool Scene::aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal) {

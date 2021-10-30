@@ -68,8 +68,8 @@ private:
 	int level = 1;
 
 	//goal positions
-	glm::ivec2 posGoals1;
-	glm::ivec2 posGoals2;
+	vector<glm::ivec2> posGoals1;
+	vector<glm::ivec2> posGoals2;
 };
 
 
