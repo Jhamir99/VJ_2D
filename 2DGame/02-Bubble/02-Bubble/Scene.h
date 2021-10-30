@@ -44,6 +44,10 @@ public:
 	glm::ivec2 getPosPlayer1();
 	glm::ivec2 getPosPlayer2();
 
+	bool goal();
+
+	bool aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal);
+
 private:
 	void initShaders();
 
@@ -61,6 +65,11 @@ private:
 	Texture spritesheet, texHand, texIns, texCred;
 	Arrow *arrow;
 	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false;
+	int level = 1;
+
+	//goal positions
+	glm::ivec2 posGoals1;
+	glm::ivec2 posGoals2;
 };
 
 

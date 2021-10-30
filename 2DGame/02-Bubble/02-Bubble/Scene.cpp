@@ -17,6 +17,8 @@
 #define INIT_PLAYER2_X_TILES 20
 #define INIT_PLAYER2_Y_TILES 15
 
+#define LEVEL_MAX 5
+
 Scene::Scene()
 {
 	map = NULL;
@@ -76,7 +78,9 @@ void Scene::initCredits() {
 
 void Scene::initGame() {
 	initShaders();
-	map = TileMap::createTileMap("levels/LEVEL5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	string sLevel = "levels/LEVEL" + to_string(level) + ".txt";
+	map = TileMap::createTileMap(sLevel, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	//player1
 	player = new Player();
@@ -98,6 +102,11 @@ void Scene::initGame() {
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+
+
+	//Position goals
+	posGoals1 = glm::ivec2(map->getTileSize() * 27, map->getTileSize() * 5);
+	posGoals2 = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT-(map->getTileSize() * 8));
 }
 
 void Scene::update(int deltaTime)
@@ -112,6 +121,11 @@ void Scene::update(int deltaTime)
 	if (bArrow) arrow->update(deltaTime);
 	if (bCredits) credits->update(deltaTime);
 	if (bInstructions) instructions->update(deltaTime);
+
+	if (goal()) {
+		if (++level <= LEVEL_MAX) initGame();
+		else init();
+	}
 	
 }
 
@@ -214,4 +228,15 @@ glm::ivec2 Scene::getPosPlayer1()
 glm::ivec2 Scene::getPosPlayer2()
 {
 	return player2->getPosition();
+}
+
+
+bool Scene::goal() {
+	return aprox(getPosPlayer1(), posGoals1) && aprox(getPosPlayer2(), posGoals2);
+}
+
+bool Scene::aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal) {
+	bool h = (posPlayer.x - posGoal.x) >= 0 && (posPlayer.x - posGoal.x) < map->getTileSize();
+	bool v = (posPlayer.y - posGoal.y) >= 0 && (posPlayer.y - posGoal.y) < map->getTileSize();
+	return h && v;
 }
