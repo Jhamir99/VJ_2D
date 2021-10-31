@@ -20,6 +20,7 @@ enum PlayerAnims
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	bJumping = false;
+	GodMode = false;
 	spritesheet.loadFromFile("images/drake.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.0833, 0.125), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
@@ -110,7 +111,7 @@ void Player::update(int deltaTime)
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	if (posPlayer.y > 360) {
+	if (!GodMode && posPlayer.y > 360) {
 		Game::instance().playDeathSound();
 		Game::instance().resetPlayer();		
 	}
@@ -131,6 +132,11 @@ void Player::setPosition(const glm::vec2 &pos)
 	posPlayer = pos;
 	bJumping = false;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+}
+
+void Player::swapGodMode()
+{
+	GodMode = !GodMode;
 }
 
 glm::ivec2 Player::getPosition()

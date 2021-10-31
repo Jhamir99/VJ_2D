@@ -17,6 +17,8 @@
 #define INIT_PLAYER2_X_TILES 20
 #define INIT_PLAYER2_Y_TILES 15
 
+#define DELAY 2000
+
 Scene::Scene()
 {
 	map = NULL;
@@ -99,6 +101,7 @@ void Scene::initGame() {
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
+	prev_time = 0.0f;
 }
 
 void Scene::update(int deltaTime)
@@ -114,6 +117,12 @@ void Scene::update(int deltaTime)
 	if (bCredits) credits->update(deltaTime);
 	if (bInstructions) instructions->update(deltaTime);
 	
+	if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
+		player->swapGodMode();
+		player2->swapGodMode();
+		prev_time = currentTime;
+	}
+
 }
 
 void Scene::render()

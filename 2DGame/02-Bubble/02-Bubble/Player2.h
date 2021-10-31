@@ -21,10 +21,13 @@ public:
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 
+	void swapGodMode();
+
 	glm::ivec2 getPosition();
 
 private:
 	bool bJumping;
+	bool GodMode;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int startY;
 	float Vjump;
