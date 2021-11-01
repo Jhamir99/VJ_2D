@@ -6,7 +6,7 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
-#include "Arrow.h"
+#include "GameObj.h"
 #include "Player2.h"
 #include "Box.h"
 
@@ -63,9 +63,9 @@ private:
 	glm::mat4 projection;
 	Sprite *menu, *instructions, *credits;
 	Texture spritesheet, texHand, texIns, texCred;
-	Arrow *arrow;
-	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false;
-	int level = 1;
+	GameObj *arrow, *flag, *flag_reverse;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
+	int level;
 
 	//goal positions
 	vector<glm::ivec2> posGoals1;

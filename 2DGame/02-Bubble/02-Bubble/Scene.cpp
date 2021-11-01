@@ -43,6 +43,8 @@ Scene::~Scene()
 void Scene::init()
 {
 	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+	
+	level = 1;
 
 	initGame();
 	initMenu();
@@ -58,9 +60,9 @@ void Scene::initMenu() {
 	spritesheet.loadFromFile("images/menu.png", TEXTURE_PIXEL_FORMAT_RGB);
 	menu = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &spritesheet, &texProgram);
 
-	texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	arrow = new Arrow();
-	arrow->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	//texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	arrow = new GameObj();
+	arrow->init_arrow(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	arrow->setPosition(glm::vec2(13 * map->getTileSize(), (11 * map->getTileSize())-68));
 }
 
@@ -95,10 +97,17 @@ void Scene::initGame() {
 	player2->setTileMap(map);
 
 	//Box
-	box = new Box();
-	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	box->setPosition(glm::vec2((INIT_PLAYER_X_TILES-4) * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
-	box->setTileMap(map);
+	switch (level) {
+		default:
+			bBox = false;
+	}
+
+	if (bBox) {
+		box = new Box();
+		box->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		box->setPosition(glm::vec2((INIT_PLAYER_X_TILES - 4) * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+		box->setTileMap(map);
+	}
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
@@ -113,6 +122,24 @@ void Scene::initGame() {
 
 	posGoals1[1] = glm::ivec2(map->getTileSize() * 11, map->getTileSize() * 7);
 	posGoals2[1] = glm::ivec2(map->getTileSize() * 16, SCREEN_HEIGHT - (map->getTileSize() * 11));
+
+	posGoals1[2] = glm::ivec2(map->getTileSize() * 27, map->getTileSize() * 8);
+	posGoals2[2] = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT - (map->getTileSize() * 11));
+
+	posGoals1[3] = glm::ivec2(map->getTileSize() * 20, map->getTileSize() * 4);
+	posGoals2[3] = glm::ivec2(map->getTileSize() * 17, SCREEN_HEIGHT - (map->getTileSize() * 11));
+
+	posGoals1[4] = glm::ivec2(map->getTileSize() * 8, map->getTileSize() * 8);
+	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
+
+	//flags
+	flag = new GameObj();
+	flag->init_flag(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flag->setPosition(glm::vec2(posGoals1[level-1].x + 32, posGoals1[level-1].y + 32));
+
+	flag_reverse = new GameObj();
+	flag_reverse->init_flag_reverse(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flag_reverse->setPosition(glm::vec2(posGoals2[level - 1].x + 32, posGoals2[level - 1].y+16));
 }
 
 void Scene::update(int deltaTime)
@@ -121,7 +148,7 @@ void Scene::update(int deltaTime)
 	if (!bMenu) {
 		player->update(deltaTime);
 		player2->update(deltaTime);
-		box->update(deltaTime);
+		if(bBox) box->update(deltaTime);
 	}
 	if (bMenu) menu->update(deltaTime);
 	if (bArrow) arrow->update(deltaTime);
@@ -147,10 +174,16 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
 	map->render();
-	if(!bMenu) player->render();
-	if (!bMenu) player2->render();
-	if (!bMenu) box->render();
-	if(bMenu) menu->render();
+
+	if (!bMenu) {
+		player->render();
+		player2->render();
+		flag->render();
+		flag_reverse->render();
+		if (bBox) box->render();
+	}
+	else menu->render();
+
 	if(bArrow) arrow->render();
 	if(bCredits) credits->render();
 	if(bInstructions) instructions->render();

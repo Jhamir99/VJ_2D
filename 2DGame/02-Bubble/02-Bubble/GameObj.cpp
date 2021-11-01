@@ -2,7 +2,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/glut.h>
-#include "Arrow.h"
+#include "GameObj.h"
 #include "Game.h"
 #include "windows.h" 
 
@@ -15,7 +15,7 @@
 
 
 
-void Arrow::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+void GameObj::init_arrow(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
 	//Botó actual
 	cButton = 0;
@@ -26,26 +26,39 @@ void Arrow::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	//espai entre butons
 	spcButtons = 91;
 
-	bJumping = false;
 	spritesheet.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
 
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posArrow.x), float(tileMapDispl.y + posArrow.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posGameObj.x), float(tileMapDispl.y + posGameObj.y)));
 }
 
-void Arrow::update(int deltaTime)
+void GameObj::init_flag(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) 
+{
+	spritesheet.loadFromFile("images/flag.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+	tileMapDispl = tileMapPos;
+}
+
+void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/flag_reverse.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+	tileMapDispl = tileMapPos;
+}
+
+void GameObj::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 	if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 	{
 		if (cButton == 0) {
 			cButton = nButtons - 1;
-			posArrow.y += cButton* spcButtons;
+			posGameObj.y += cButton* spcButtons;
 
 		}
 		else {
-			posArrow.y -= spcButtons;
+			posGameObj.y -= spcButtons;
 			cButton--;
 		}
 
@@ -55,11 +68,11 @@ void Arrow::update(int deltaTime)
 	{
 		if (cButton == nButtons-1) {
 			cButton = 0;
-			posArrow.y -= (nButtons - 1) * spcButtons;
+			posGameObj.y -= (nButtons - 1) * spcButtons;
 
 		}
 		else {
-			posArrow.y += spcButtons;
+			posGameObj.y += spcButtons;
 			cButton++;
 		}
 
@@ -91,23 +104,23 @@ void Arrow::update(int deltaTime)
 		Game::instance().showMenu();
 	}
 	
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posArrow.x), float(tileMapDispl.y + posArrow.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posGameObj.x), float(tileMapDispl.y + posGameObj.y)));
 }
 
-void Arrow::render()
+void GameObj::render()
 {
 	sprite->render();
 }
 
-void Arrow::setTileMap(TileMap* tileMap)
+void GameObj::setTileMap(TileMap* tileMap)
 {
 	map = tileMap;
 }
 
-void Arrow::setPosition(const glm::vec2& pos)
+void GameObj::setPosition(const glm::vec2& pos)
 {
-	posArrow = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posArrow.x), float(tileMapDispl.y + posArrow.y)));
+	posGameObj = pos;
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posGameObj.x), float(tileMapDispl.y + posGameObj.y)));
 }
 
 
