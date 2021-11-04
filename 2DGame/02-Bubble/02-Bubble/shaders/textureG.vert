@@ -7,6 +7,7 @@ in vec2 position;
 in vec2 texCoord;
 out vec2 texCoordFrag;
 
+out vec4 pos;
 
 void main()
 {
@@ -15,6 +16,7 @@ void main()
 
 
 	// Transform position from pixel coordinates to clipping coordinates
-	gl_Position = projection * modelview * vec4(position, 0.0, 1.0);
+	pos = projection * modelview * vec4(position, 0.0, 1.0);
+	gl_Position = pos;
 }
 
