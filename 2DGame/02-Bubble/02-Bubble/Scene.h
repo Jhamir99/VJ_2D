@@ -6,7 +6,7 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
-#include "Arrow.h"
+#include "GameObj.h"
 #include "Player2.h"
 #include "Box.h"
 
@@ -44,6 +44,10 @@ public:
 	glm::ivec2 getPosPlayer1();
 	glm::ivec2 getPosPlayer2();
 
+	bool goal();
+
+	bool aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal);
+
 private:
 	void initShaders();
 
@@ -59,8 +63,13 @@ private:
 	glm::mat4 projection;
 	Sprite *menu, *instructions, *credits;
 	Texture spritesheet, texHand, texIns, texCred;
-	Arrow *arrow;
-	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false;
+	GameObj *arrow, *flag, *flag_reverse;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
+	int level;
+
+	//goal positions
+	vector<glm::ivec2> posGoals1;
+	vector<glm::ivec2> posGoals2;
 };
 
 
