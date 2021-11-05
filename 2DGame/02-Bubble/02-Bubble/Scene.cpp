@@ -137,7 +137,7 @@ void Scene::initGame() {
 	//flags
 	flag = new GameObj();
 	flag->init_flag(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	flag->setPosition(glm::vec2(posGoals1[level-1].x + 32, posGoals1[level-1].y + 32));
+	flag->setPosition(glm::vec2(posGoals1[level-1].x + 32, posGoals1[level-1].y +2));
 
 	flag_reverse = new GameObj();
 	flag_reverse->init_flag_reverse(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -150,6 +150,8 @@ void Scene::update(int deltaTime)
 	if (!bMenu) {
 		player->update(deltaTime);
 		player2->update(deltaTime);
+		flag->update_animation(deltaTime);
+		flag_reverse->update_animation(deltaTime);
 		if(bBox) box->update(deltaTime);
 	}
 	if (bMenu) menu->update(deltaTime);
@@ -166,6 +168,7 @@ void Scene::update(int deltaTime)
 		player->swapGodMode();
 		player2->swapGodMode();
 		prev_time = currentTime;
+		map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	}
 
 }

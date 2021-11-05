@@ -276,6 +276,15 @@ bool TileMap::collisionJumpUp(const glm::ivec2& pos, const glm::ivec2& size, int
 	return false;
 }
 
+void TileMap::destroy_barrier(const glm::vec2& minCoords, ShaderProgram& program) {
+	for (int x = 0; x < mapSize.x; x++)
+		for (int y = 0; y < mapSize.y; y++)
+			if (map[y * mapSize.x + x] == 2)
+				map[y * mapSize.x + x] = 0;
+	prepareArrays(minCoords, program);
+	render();
+}
+
 
 
 
