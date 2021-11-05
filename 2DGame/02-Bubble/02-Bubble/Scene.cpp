@@ -9,7 +9,7 @@
 
 
 #define SCREEN_X 0
-#define SCREEN_Y 0
+#define SCREEN_Y 10
 
 #define INIT_PLAYER_X_TILES 20
 #define INIT_PLAYER_Y_TILES 5
@@ -227,6 +227,36 @@ void Scene::initShaders()
 	fShader.free();
 }
 
+void Scene::initGameShaders()
+{
+	Shader vShader, fShader;
+
+	vShader.initFromFile(VERTEX_SHADER, "shaders/textureG.vert");
+	if (!vShader.isCompiled())
+	{
+		cout << "Vertex Shader Error" << endl;
+		cout << "" << vShader.log() << endl << endl;
+	}
+	fShader.initFromFile(FRAGMENT_SHADER, "shaders/textureG.frag");
+	if (!fShader.isCompiled())
+	{
+		cout << "Fragment Shader Error" << endl;
+		cout << "" << fShader.log() << endl << endl;
+	}
+	texProgram.init();
+	texProgram.addShader(vShader);
+	texProgram.addShader(fShader);
+	texProgram.link();
+	if (!texProgram.isLinked())
+	{
+		cout << "Shader Linking Error" << endl;
+		cout << "" << texProgram.log() << endl << endl;
+	}
+	texProgram.bindFragmentOutput("outColor");
+	vShader.free();
+	fShader.free();
+}
+
 
 
 void Scene::showMenu()
@@ -244,6 +274,7 @@ void Scene::showInstructions()
 
 void Scene::showGame()
 {
+	initGameShaders();
 	bMenu = false;
 	bArrow = false;
 }

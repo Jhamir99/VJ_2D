@@ -51,6 +51,8 @@ public:
 private:
 	void initShaders();
 
+	void initGameShaders();
+
 
 private:
 	TileMap *map;

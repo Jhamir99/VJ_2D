@@ -16,7 +16,7 @@ void Box::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	posPlayer1 = Game::instance().getPosPlayer1();
 	posPlayer2 = Game::instance().getPosPlayer2();
 	tileMapDispl = tileMapPos;
-
+	baixant = false;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBox.x), float(tileMapDispl.y + posBox.y)));
 }
 
@@ -24,9 +24,66 @@ void Box::update(int deltaTime)
 {
 	Player_up = false;
 
-	if (posBox.y < 360) { //pot moure player 1
+	//la caixa es troba en l'aigua, ha de poder moure els dos
+	if (posBox.y > 320 && posBox.y < 340) {
+		if (posBox.y > 335 && baixant)
+			baixant = false;
+		else if (posBox.y < 325 && !baixant)
+			baixant = true;
+
+		if (baixant)
+			pos2Y += 1;
+		else 
+			pos2Y -= 1;
+
+		posBox.y = pos2Y / 2;
+
+		//mirem player1
+		PosAux = posPlayer1.x;
+		posPlayer1 = Game::instance().getPosPlayer1();
+		int difx = posPlayer1.x - posBox.x;
+		if (difx < 44 && difx > -44) {
+			int dify = posBox.y - posPlayer1.y;
+			if (dify < 58 && dify > 25) {
+				if (!Game::instance().getSpecialKey(GLUT_KEY_UP)) {
+					posPlayer1.y = posBox.y - 48;
+					Game::instance().setPosition1(posPlayer1);
+					Player_up = true;
+				}
+				else if (dify < 43) {
+					posPlayer1.y = posBox.y - 48;
+					Game::instance().setPosition1(posPlayer1);
+					Player_up = true;
+				}
+			}
+		}
+
+		//mirem player 2
+		PosAux = posPlayer2.x;
+		posPlayer2 = Game::instance().getPosPlayer2();
+		difx = posPlayer2.x - posBox.x;
+		if (difx < 44 && difx > -44) {
+			int dify = posPlayer2.y - posBox.y;
+			if (dify < 58 && dify > 25) {
+				if (!Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					posPlayer2.y = posBox.y + 48;
+					Game::instance().setPosition2(posPlayer2);
+					Player_up = true;
+				}
+				else if (dify < 43) {
+					posPlayer2.y = posBox.y + 48;
+					Game::instance().setPosition2(posPlayer2);
+					Player_up = true;
+				}
+			}
+		}
+
+	}
+	else if (posBox.y < 340) { //pot moure player 1
 		posBox.y += FALL_STEP;
 		map->collisionMoveDown(posBox, glm::ivec2(48, 48), &posBox.y);
+		pos2Y = 2 * posBox.y;
 
 		PosAux = posPlayer1.x;
 		posPlayer1 = Game::instance().getPosPlayer1();
@@ -135,6 +192,7 @@ void Box::update(int deltaTime)
 				}
 			}
 		}
+		pos2Y = 2 * posBox.y;
 	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBox.x), float(tileMapDispl.y + posBox.y)));

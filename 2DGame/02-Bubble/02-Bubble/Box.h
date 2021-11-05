@@ -24,8 +24,8 @@ public:
 private:
 
 	glm::ivec2 tileMapDispl, posBox;
-	int Vjump, startY;
-	bool Player_up;
+	int Vjump, startY, pos2Y;
+	bool Player_up, baixant;
 	int PosAux;
 	glm::ivec2 posPlayer1, posPlayer2;
 	Texture spritesheet;
