@@ -67,18 +67,15 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	GameObj *arrow, *flag, *flag_reverse, *cactus, *cactusD, *cactusL, *lever;
-	Sprite *menu, *instructions, *credits;
-	Texture spritesheet, texHand, texIns, texCred;
-	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
 	Sprite *menu, *instructions, *credits, *background;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox, blever, lever_trigger;
 	Texture spritesheet, texHand, texIns, texCred, texbackground;
 	glm::ivec2 posLever;
 	bool wait = false;
 	int level;
 
 	//goal positions
-	vector<glm::ivec2> posGoals1;
-	vector<glm::ivec2> posGoals2;
+	vector<glm::ivec2> posGoals1, posGoals2, posCactus, posCactusD, posCactusL;
 };
 
 

@@ -212,13 +212,13 @@ void Scene::update(int deltaTime)
 			flag->update_animation(deltaTime);
 			flag_reverse->update_animation(deltaTime);
 			if (bBox) box->update(deltaTime);
-			if (blever && !lever_trigger) 
+			if (blever && !lever_trigger)
 				if (aprox(posLever, getPosPlayer1())) {
 					lever->change_animation();
 					map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 					lever_trigger = true;
 				}
-					
+
 		}
 		if (bMenu) menu->update(deltaTime);
 		if (bArrow) arrow->update(deltaTime);
@@ -236,10 +236,12 @@ void Scene::update(int deltaTime)
 			player->swapGodMode();
 			player2->swapGodMode();
 			prev_time = currentTime;
-		}else if (Game::instance().getKey('1')) {
+		}
+		else if (Game::instance().getKey('1')) {
 			level = 1;
 			initGame();
-		}else if (Game::instance().getKey('2')) {
+		}
+		else if (Game::instance().getKey('2')) {
 			level = 2;
 			initGame();
 		}
@@ -255,6 +257,7 @@ void Scene::update(int deltaTime)
 			level = 5;
 			initGame();
 		}
+	}
 		
 	if (!bMenu) {
 		player->update(deltaTime);
