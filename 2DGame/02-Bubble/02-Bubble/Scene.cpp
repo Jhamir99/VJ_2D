@@ -154,6 +154,7 @@ void Scene::initGame() {
 	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
 
+	//cactus
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 23) + 24, (map->getTileSize() * 7) - 2));
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 24) + 24, (map->getTileSize() * 7) - 2));
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 25) + 24, (map->getTileSize() * 7) - 2));
@@ -167,6 +168,18 @@ void Scene::initGame() {
 	posCactus.push_back(glm::ivec2((map->getTileSize() * 25) + 24, (map->getTileSize() * 8) + 16));
 	posCactus.push_back(glm::ivec2((map->getTileSize() * 12) + 24, (map->getTileSize() * 13) + 16));
 	posCactus.push_back(glm::ivec2((map->getTileSize() * 13) + 24, (map->getTileSize() * 13) + 16));
+	
+	cactus = new GameObj();
+	cactus->init_cactus(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	cactusD = new GameObj();
+	cactusD->init_cactusD(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	cactusL = new GameObj();
+	cactusL->init_cactusL(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+
+
+
 
 	//flags
 	flag = new GameObj();
@@ -176,16 +189,6 @@ void Scene::initGame() {
 	flag_reverse = new GameObj();
 	flag_reverse->init_flag_reverse(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	flag_reverse->setPosition(glm::vec2(posGoals2[level - 1].x + 32, posGoals2[level - 1].y+16));
-
-	//Cactus
-	cactus = new GameObj();
-	cactus->init_cactus(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-
-	cactusD = new GameObj();
-	cactusD->init_cactusD(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-
-	cactusL = new GameObj();
-	cactusL->init_cactusL(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 }
 
 void Scene::update(int deltaTime)
