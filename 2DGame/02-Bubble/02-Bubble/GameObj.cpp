@@ -47,6 +47,27 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 	tileMapDispl = tileMapPos;
 }
 
+void GameObj::init_cactus(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/cactus.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+	tileMapDispl = tileMapPos;
+}
+
+void GameObj::init_cactusD(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/cactus_reverse.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+	tileMapDispl = tileMapPos;
+}
+
+void GameObj::init_cactusL(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/cactusL.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+	tileMapDispl = tileMapPos;
+}
+
 void GameObj::update(int deltaTime)
 {
 	sprite->update(deltaTime);
@@ -122,7 +143,5 @@ void GameObj::setPosition(const glm::vec2& pos)
 	posGameObj = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posGameObj.x), float(tileMapDispl.y + posGameObj.y)));
 }
-
-
 
 

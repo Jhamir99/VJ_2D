@@ -12,6 +12,13 @@ public:
 	void init_arrow(const glm::ivec2& tileMapPos,ShaderProgram& shaderProgram);
 	void init_flag(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	void init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+
+	void init_cactus(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+
+	void init_cactusD(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+
+	void init_cactusL(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+
 	void update(int deltaTime);
 	void render();
 

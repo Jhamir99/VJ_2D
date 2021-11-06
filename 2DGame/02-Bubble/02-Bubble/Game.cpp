@@ -88,7 +88,7 @@ void Game::showCredits()
 };
 
 void Game::resetPlayer() {
-	scene.init();
+	scene.initGame();
 }
 
 void Game::playDeathSound() {

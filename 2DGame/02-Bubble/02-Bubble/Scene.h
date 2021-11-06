@@ -48,6 +48,8 @@ public:
 
 	bool aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal);
 
+	bool touch_cactus(glm::ivec2 posPlayer);
+
 private:
 	void initShaders();
 
@@ -65,15 +67,13 @@ private:
 	glm::mat4 projection;
 	Sprite *menu, *instructions, *credits;
 	Texture spritesheet, texHand, texIns, texCred;
-	GameObj *arrow, *flag, *flag_reverse;
+	GameObj *arrow, *flag, *flag_reverse, *cactus, *cactusD, *cactusL;
 	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
 	int level;
 
 	//goal positions
-	vector<glm::ivec2> posGoals1;
-	vector<glm::ivec2> posGoals2;
+	vector<glm::ivec2> posGoals1, posGoals2, posCactus, posCactusD, posCactusL;
 };
 
 
 #endif // _SCENE_INCLUDE
-

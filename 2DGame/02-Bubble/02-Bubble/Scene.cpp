@@ -134,6 +134,21 @@ void Scene::initGame() {
 	posGoals1[4] = glm::ivec2(map->getTileSize() * 8, map->getTileSize() * 8);
 	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
+
+	posCactusD.push_back(glm::ivec2((map->getTileSize() * 23) + 24, (map->getTileSize() * 7) - 2));
+	posCactusD.push_back(glm::ivec2((map->getTileSize() * 24) + 24, (map->getTileSize() * 7) - 2));
+	posCactusD.push_back(glm::ivec2((map->getTileSize() * 25) + 24, (map->getTileSize() * 7) - 2));
+
+	posCactusL.push_back(glm::ivec2((map->getTileSize() * 18) + 16, (map->getTileSize() * 6)));
+
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 19) + 24, (map->getTileSize() * 7) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 20) + 24, (map->getTileSize() * 7) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 21) + 24, (map->getTileSize() * 7) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 24) + 24, (map->getTileSize() * 8) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 25) + 24, (map->getTileSize() * 8) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 12) + 24, (map->getTileSize() * 13) + 16));
+	posCactus.push_back(glm::ivec2((map->getTileSize() * 13) + 24, (map->getTileSize() * 13) + 16));
+
 	//flags
 	flag = new GameObj();
 	flag->init_flag(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -142,6 +157,16 @@ void Scene::initGame() {
 	flag_reverse = new GameObj();
 	flag_reverse->init_flag_reverse(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	flag_reverse->setPosition(glm::vec2(posGoals2[level - 1].x + 32, posGoals2[level - 1].y+16));
+
+	//Cactus
+	cactus = new GameObj();
+	cactus->init_cactus(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	cactusD = new GameObj();
+	cactusD->init_cactusD(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	cactusL = new GameObj();
+	cactusL->init_cactusL(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 }
 
 void Scene::update(int deltaTime)
@@ -168,6 +193,36 @@ void Scene::update(int deltaTime)
 		prev_time = currentTime;
 	}
 
+
+	//Jump Level
+	if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
+		level = 1;
+		initGame();
+	}
+	else if (Game::instance().getKey('2') && currentTime - prev_time > DELAY) {
+		level = 2;
+		initGame();
+	}
+	if (Game::instance().getKey('3') && currentTime - prev_time > DELAY) {
+		level = 3;
+		initGame();
+	}
+	else if (Game::instance().getKey('4') && currentTime - prev_time > DELAY) {
+		level = 4;
+		initGame();
+	}
+	if (Game::instance().getKey('5') && currentTime - prev_time > DELAY) {
+		level = 5;
+		initGame();
+	}
+
+
+	//Touch cactus
+	if (touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())) {
+		playDeathSound();
+		Game::instance().resetPlayer();
+	}
+
 }
 
 void Scene::render()
@@ -189,6 +244,32 @@ void Scene::render()
 		flag->render();
 		flag_reverse->render();
 		if (bBox) box->render();
+
+
+		switch (level) {
+		case 3:
+			for (glm::ivec2 pc : posCactusD) {
+				cactusD->setPosition(pc);
+				cactusD->render();
+			}
+			break;
+
+		case 4:
+			for (glm::ivec2 pc : posCactusL) {
+				cactusL->setPosition(pc);
+				cactusL->render();
+			}
+			break;
+
+		case 5:
+			for (glm::ivec2 pc : posCactus) {
+				cactus->setPosition(pc);
+				cactus->render();
+			}
+			break;
+		default:
+			;
+		}
 	}
 	else menu->render();
 
@@ -316,5 +397,34 @@ bool Scene::goal() {
 bool Scene::aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal) {
 	bool h = (posPlayer.x - posGoal.x) >= 0 && (posPlayer.x - posGoal.x) < map->getTileSize();
 	bool v = (posPlayer.y - posGoal.y) >= 0 && (posPlayer.y - posGoal.y) < map->getTileSize();
+	return h && v;
+}
+
+bool Scene::touch_cactus(glm::ivec2 posPlayer) {
+	bool h = false, v = false;
+
+	switch (level) {
+		case 3:
+			for (glm::ivec2 pc : posCactusD) {
+				if(!h) h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x+48) < 0;
+				if(!v) v = (posPlayer.y) - (pc.y + 24) < 0;
+			}
+			break;
+
+		case 4:
+			for (glm::ivec2 pc : posCactusL) {
+				if (!h) h = (posPlayer.x + 32) - (pc.x) > 0 && posPlayer.x - (pc.x + 48) < 0; 
+				if (!v) v = (posPlayer.y) - (pc.y + 24) < 0 && (posPlayer.y + 32) - (pc.y + 24) > 0;
+			}
+			break;
+
+		case 5:
+			for (glm::ivec2 pc : posCactus) {
+				if (!h) h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x + 48) < 0;
+				if (!v) v = (posPlayer.y) - (pc.y + 24) < 0;
+			}
+			break;
+	}
+
 	return h && v;
 }
