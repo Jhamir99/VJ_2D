@@ -152,9 +152,7 @@ void Scene::initGame() {
 
 	posGoals1[4] = glm::ivec2(map->getTileSize() * 8, map->getTileSize() * 8);
 	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
-
-<<<<<<< HEAD
-
+	
 	//cactus
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 23) + 24, (map->getTileSize() * 7) - 2));
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 24) + 24, (map->getTileSize() * 7) - 2));
@@ -181,17 +179,10 @@ void Scene::initGame() {
 
 
 
-
-	//flags
-	flag = new GameObj();
-	flag->init_flag(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	flag->setPosition(glm::vec2(posGoals1[level-1].x + 32, posGoals1[level-1].y +2));
-=======
 	//flags
 	flag = new GameObj();
 	flag->init_flag(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	flag->setPosition(glm::vec2(posGoals1[level-1].x + 32, posGoals1[level-1].y + 32));
->>>>>>> parent of d6e5e45 (cactus death)
 
 	flag_reverse = new GameObj();
 	flag_reverse->init_flag_reverse(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -201,6 +192,7 @@ void Scene::initGame() {
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+	
 	if (wait) {
 		player->update_win_animation(deltaTime);
 		player2->update_win_animation(deltaTime);
@@ -263,6 +255,26 @@ void Scene::update(int deltaTime)
 			level = 5;
 			initGame();
 		}
+		
+	if (!bMenu) {
+		player->update(deltaTime);
+		player2->update(deltaTime);
+		if(bBox) box->update(deltaTime);
+	}
+	if (bMenu) menu->update(deltaTime);
+	if (bArrow) arrow->update(deltaTime);
+	if (bCredits) credits->update(deltaTime);
+	if (bInstructions) instructions->update(deltaTime);
+
+	if (goal()) {
+		if (++level <= LEVEL_MAX) initGame();
+		else init();
+	}
+	
+	if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
+		player->swapGodMode();
+		player2->swapGodMode();
+		prev_time = currentTime;
 	}
 
 }
@@ -287,38 +299,35 @@ void Scene::render()
 		player2->render();
 		flag->render();
 		flag_reverse->render();
+
 		if (bBox) box->render();
-<<<<<<< HEAD
 
+			switch (level) {
+			case 3:
+				for (glm::ivec2 pc : posCactusD) {
+					cactusD->setPosition(pc);
+					cactusD->render();
+				}
+				break;
 
-		switch (level) {
-		case 3:
-			for (glm::ivec2 pc : posCactusD) {
-				cactusD->setPosition(pc);
-				cactusD->render();
-			}
-			break;
+			case 4:
+				for (glm::ivec2 pc : posCactusL) {
+					cactusL->setPosition(pc);
+					cactusL->render();
+				}
+				break;
 
-		case 4:
-			for (glm::ivec2 pc : posCactusL) {
-				cactusL->setPosition(pc);
-				cactusL->render();
-			}
-			break;
-
-		case 5:
-			for (glm::ivec2 pc : posCactus) {
-				cactus->setPosition(pc);
-				cactus->render();
-			}
-			break;
-		default:
+			case 5:
+				for (glm::ivec2 pc : posCactus) {
+					cactus->setPosition(pc);
+					cactus->render();
+				}
+				break;
+			default:
 			;
 		}
 		if (blever) 
 			lever->render();
-=======
->>>>>>> parent of d6e5e45 (cactus death)
 	}
 	else menu->render();
 
