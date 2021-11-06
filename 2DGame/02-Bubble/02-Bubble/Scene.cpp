@@ -97,6 +97,11 @@ void Scene::initGame() {
 	player2->setPosition(glm::vec2(INIT_PLAYER2_X_TILES * map->getTileSize(), INIT_PLAYER2_Y_TILES * map->getTileSize()));
 	player2->setTileMap(map);
 
+	if (level == 5) {
+		player->setPosition(player->getPosition() - 2 * map->getTileSize());
+		player2->setPosition(player2->getPosition() - 2 * map->getTileSize());
+	}
+
 	//Box
 	switch (level) {
 		default:
