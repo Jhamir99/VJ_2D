@@ -72,7 +72,8 @@ private:
 	int level;
 
 	//goal positions
-	vector<glm::ivec2> posGoals1, posGoals2, posCactus, posCactusD, posCactusL;
+	vector<glm::ivec2> posGoals1;
+	vector<glm::ivec2> posGoals2;
 };
 
 

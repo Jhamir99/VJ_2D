@@ -13,7 +13,7 @@
 
 enum PlayerAnims
 {
-	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP
+	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP, WIN
 };
 
 
@@ -144,6 +144,11 @@ glm::ivec2 Player::getPosition()
 	return posPlayer;
 }
 
+void Player::update_win_animation(int deltaTime) {
+	if (sprite->animation() != WIN)
+		sprite->changeAnimation(WIN);
+	sprite->update(deltaTime);
+}
 
 
 

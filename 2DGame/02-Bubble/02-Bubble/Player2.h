@@ -25,6 +25,8 @@ public:
 
 	glm::ivec2 getPosition();
 
+	void update_win_animation(int deltaTime);
+
 private:
 	bool bJumping;
 	bool GodMode;
