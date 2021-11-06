@@ -19,7 +19,7 @@ enum FlagAnims {
 
 void GameObj::init_arrow(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
-	//Botó actual
+	//Botï¿½ actual
 	cButton = 0;
 
 	//Nombre de botons
@@ -48,7 +48,7 @@ void GameObj::init_flag(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgr
 	sprite->addKeyframe(IDLE, glm::vec2(0.75f, .0f));
 	sprite->addKeyframe(IDLE, glm::vec2(0.875f, .0f));
 
-	sprite->setAnimationSpeed(LOWER, 8);
+	sprite->setAnimationSpeed(LOWER, 4);
 	sprite->addKeyframe(LOWER, glm::vec2(0.0f,.0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.125f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .0f));
@@ -74,7 +74,7 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 	sprite->addKeyframe(IDLE, glm::vec2(0.125f, .0f));
 	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
 
-	sprite->setAnimationSpeed(LOWER, 8);
+	sprite->setAnimationSpeed(LOWER, 4);
 	sprite->addKeyframe(LOWER, glm::vec2(0.875f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.625f, .0f));
@@ -86,6 +86,7 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 
 	tileMapDispl = tileMapPos;
 }
+
 
 void GameObj::init_cactus(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
@@ -105,6 +106,23 @@ void GameObj::init_cactusL(const glm::ivec2& tileMapPos, ShaderProgram& shaderPr
 {
 	spritesheet.loadFromFile("images/cactusL.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
+}
+
+void GameObj::init_lever(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/lever.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 48), glm::vec2(0.5, 1.), &spritesheet, &shaderProgram);
+
+	sprite->setNumberAnimations(2);
+
+	sprite->setAnimationSpeed(IDLE, 0);
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
+
+	sprite->setAnimationSpeed(LOWER, 0);
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .0f));
+
+	sprite->changeAnimation(IDLE);
+
 	tileMapDispl = tileMapPos;
 }
 

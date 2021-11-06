@@ -14,10 +14,10 @@ public:
 	void init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 
 	void init_cactus(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
-
 	void init_cactusD(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
-
 	void init_cactusL(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+	
+	void init_lever(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 
 	void update(int deltaTime);
 	void update_animation(int deltaTime);
