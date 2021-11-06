@@ -87,6 +87,7 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 	tileMapDispl = tileMapPos;
 }
 
+<<<<<<< HEAD
 
 void GameObj::init_cactus(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
@@ -126,6 +127,8 @@ void GameObj::init_lever(const glm::ivec2& tileMapPos, ShaderProgram& shaderProg
 	tileMapDispl = tileMapPos;
 }
 
+=======
+>>>>>>> parent of d6e5e45 (cactus death)
 void GameObj::update(int deltaTime)
 {
 	sprite->update(deltaTime);
@@ -212,5 +215,7 @@ void GameObj::setPosition(const glm::vec2& pos)
 	posGameObj = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posGameObj.x), float(tileMapDispl.y + posGameObj.y)));
 }
+
+
 
 

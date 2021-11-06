@@ -51,8 +51,6 @@ public:
 
 	bool aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal);
 
-	bool touch_cactus(glm::ivec2 posPlayer);
-
 private:
 	void initShaders();
 
@@ -68,8 +66,14 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
+<<<<<<< HEAD
 
 	GameObj *arrow, *flag, *flag_reverse, *cactus, *cactusD, *cactusL, *lever;
+=======
+	Sprite *menu, *instructions, *credits;
+	Texture spritesheet, texHand, texIns, texCred;
+	GameObj *arrow, *flag, *flag_reverse;
+>>>>>>> parent of d6e5e45 (cactus death)
 	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
 	Sprite *menu, *instructions, *credits, *background;
 	Texture spritesheet, texHand, texIns, texCred, texbackground;
@@ -78,8 +82,10 @@ private:
 	int level;
 
 	//goal positions
-	vector<glm::ivec2> posGoals1, posGoals2, posCactus, posCactusD, posCactusL;
+	vector<glm::ivec2> posGoals1;
+	vector<glm::ivec2> posGoals2;
 };
 
 
 #endif // _SCENE_INCLUDE
+
