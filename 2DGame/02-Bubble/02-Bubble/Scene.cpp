@@ -12,12 +12,12 @@
 #define SCREEN_Y 10
 
 #define INIT_PLAYER_X_TILES 20
-#define INIT_PLAYER_Y_TILES 7
+#define INIT_PLAYER_Y_TILES 5
 
 #define INIT_PLAYER2_X_TILES 20
-#define INIT_PLAYER2_Y_TILES 14
+#define INIT_PLAYER2_Y_TILES 15
 
-#define DELAY 1000
+#define DELAY 2000
 #define LEVEL_MAX 5
 
 Scene::Scene()
@@ -46,12 +46,11 @@ void Scene::init()
 	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
 	
 	level = 1;
-	initShaders();
+
 	initGame();
 	initMenu();
 	initInstructions();
 	initCredits();
-	initBackground();
 	currentTime = 0.0f;
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 }
@@ -80,13 +79,8 @@ void Scene::initCredits() {
 	credits = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texCred, &texProgram);
 }
 
-void Scene::initBackground() {
-	texbackground.loadFromFile("images/background3.jpg", TEXTURE_PIXEL_FORMAT_RGB);
-	background = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texbackground, &texProgram);
-}
-
 void Scene::initGame() {
-	
+	initShaders();
 
 	string sLevel = "levels/LEVEL" + to_string(level) + ".txt";
 	map = TileMap::createTileMap(sLevel, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -110,23 +104,15 @@ void Scene::initGame() {
 
 	//Box
 	switch (level) {
-		case 4:
-			lever = new GameObj();
-			lever->init_lever(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			posLever = glm::vec2(16 * map->getTileSize(), 5 * map->getTileSize() - 14);
-			lever->setPosition(posLever);
-			blever = true;
-			lever_trigger = false;
-			box = new Box();
-			box->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			box->setPosition(glm::vec2(10 * map->getTileSize(), 14 * map->getTileSize()));
-			box->setTileMap(map);
-			bBox = true;
-			break;
 		default:
 			bBox = false;
-			blever = false;
-			lever_trigger = false;
+	}
+
+	if (bBox) {
+		box = new Box();
+		box->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+		box->setPosition(glm::vec2((INIT_PLAYER_X_TILES - 4) * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+		box->setTileMap(map);
 	}
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
@@ -148,7 +134,7 @@ void Scene::initGame() {
 	posGoals2[2] = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
 	posGoals1[3] = glm::ivec2(map->getTileSize() * 20, map->getTileSize() * 4);
-	posGoals2[3] = glm::ivec2(map->getTileSize() * 28, SCREEN_HEIGHT - (map->getTileSize() * 4));
+	posGoals2[3] = glm::ivec2(map->getTileSize() * 17, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
 	posGoals1[4] = glm::ivec2(map->getTileSize() * 8, map->getTileSize() * 8);
 	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
@@ -198,12 +184,7 @@ void Scene::update(int deltaTime)
 		player2->update_win_animation(deltaTime);
 		flag->update_animation(deltaTime);
 		flag_reverse->update_animation(deltaTime);
-
-		if (currentTime - prev_time > DELAY) {
-			wait = false;
-			if (++level <= LEVEL_MAX) initGame();
-			else init();
-		}
+		if(bBox) box->update(deltaTime);
 	}
 	else {
 		if (!bMenu) {
@@ -293,11 +274,9 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 
-	
+	map->render();
 
 	if (!bMenu) {
-		background->render();
-		map->render();
 		player->render();
 		player2->render();
 		flag->render();
@@ -450,17 +429,10 @@ glm::ivec2 Scene::getPosPlayer2()
 	return player2->getPosition();
 }
 
-void Scene::enable_doubleJump(int pj) {
-	if (pj == 1)
-		player->enable_doubleJump();
-	else
-		player2->enable_doubleJump();
-}
 
 bool Scene::goal() {
 	return aprox(getPosPlayer1(), posGoals1[level-1]) && aprox(getPosPlayer2(), posGoals2[level-1]);
 }
-
 
 bool Scene::aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal) {
 	bool h = (posPlayer.x - posGoal.x) >= 0 && (posPlayer.x - posGoal.x) < map->getTileSize();

@@ -16,7 +16,6 @@ class Player2
 public:
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
-	void update_win_animation(int deltaTime);
 	void render();
 
 	void setTileMap(TileMap* tileMap);
@@ -24,12 +23,10 @@ public:
 
 	void swapGodMode();
 
-	void enable_doubleJump();
-
 	glm::ivec2 getPosition();
 
 private:
-	bool bJumping, bDoubleJump;
+	bool bJumping;
 	bool GodMode;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int startY;

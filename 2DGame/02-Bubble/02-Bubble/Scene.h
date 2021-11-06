@@ -25,7 +25,6 @@ public:
 	void initMenu();
 	void initInstructions();
 	void initCredits();
-	void initBackground();
 	void initGame();
 	void update(int deltaTime);
 	void render();
@@ -44,8 +43,6 @@ public:
 
 	glm::ivec2 getPosPlayer1();
 	glm::ivec2 getPosPlayer2();
-
-	void enable_doubleJump(int pj);
 
 	bool goal();
 

@@ -48,7 +48,7 @@ void GameObj::init_flag(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgr
 	sprite->addKeyframe(IDLE, glm::vec2(0.75f, .0f));
 	sprite->addKeyframe(IDLE, glm::vec2(0.875f, .0f));
 
-	sprite->setAnimationSpeed(LOWER, 4);
+	sprite->setAnimationSpeed(LOWER, 8);
 	sprite->addKeyframe(LOWER, glm::vec2(0.0f,.0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.125f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .0f));
@@ -74,7 +74,7 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 	sprite->addKeyframe(IDLE, glm::vec2(0.125f, .0f));
 	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
 
-	sprite->setAnimationSpeed(LOWER, 4);
+	sprite->setAnimationSpeed(LOWER, 8);
 	sprite->addKeyframe(LOWER, glm::vec2(0.875f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .0f));
 	sprite->addKeyframe(LOWER, glm::vec2(0.625f, .0f));

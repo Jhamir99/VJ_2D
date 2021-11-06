@@ -113,7 +113,3 @@ void Game::setPosition2(const glm::vec2& pos)
 {
 	scene.setPosition2(pos);
 }
-
-void Game::enable_doubleJump(int pj) {
-	scene.enable_doubleJump(pj);
-}

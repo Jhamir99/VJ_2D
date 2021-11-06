@@ -58,8 +58,6 @@ public:
 	void setPosition1(const glm::vec2& pos);
 	void setPosition2(const glm::vec2& pos);
 
-	void enable_doubleJump(int pj);
-
 private:
 	bool bPlay;                       // Continue to play game?
 	Scene scene;                      // Scene to render

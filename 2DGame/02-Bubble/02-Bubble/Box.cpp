@@ -48,13 +48,11 @@ void Box::update(int deltaTime)
 				if (!Game::instance().getSpecialKey(GLUT_KEY_UP)) {
 					posPlayer1.y = posBox.y - 48;
 					Game::instance().setPosition1(posPlayer1);
-					Game::instance().enable_doubleJump(1);
 					Player_up = true;
 				}
 				else if (dify < 43) {
 					posPlayer1.y = posBox.y - 48;
 					Game::instance().setPosition1(posPlayer1);
-					Game::instance().enable_doubleJump(1);
 					Player_up = true;
 				}
 			}
@@ -71,13 +69,11 @@ void Box::update(int deltaTime)
 				{
 					posPlayer2.y = posBox.y + 48;
 					Game::instance().setPosition2(posPlayer2);
-					Game::instance().enable_doubleJump(2);
 					Player_up = true;
 				}
 				else if (dify < 43) {
 					posPlayer2.y = posBox.y + 48;
 					Game::instance().setPosition2(posPlayer2);
-					Game::instance().enable_doubleJump(2);
 					Player_up = true;
 				}
 			}
@@ -100,13 +96,11 @@ void Box::update(int deltaTime)
 				if (!Game::instance().getSpecialKey(GLUT_KEY_UP)){
 					posPlayer1.y = posBox.y - 48;
 					Game::instance().setPosition1(posPlayer1);
-					Game::instance().enable_doubleJump(1);
 					Player_up = true;
 				}
 				else if (dify < 43) {
 					posPlayer1.y = posBox.y - 48;
 					Game::instance().setPosition1(posPlayer1);
-					Game::instance().enable_doubleJump(1);
 					Player_up = true;
 				}
 			}
@@ -158,13 +152,11 @@ void Box::update(int deltaTime)
 				{
 					posPlayer2.y = posBox.y + 48;
 					Game::instance().setPosition2(posPlayer2);
-					Game::instance().enable_doubleJump(2);
 					Player_up = true;
 				}
 				else if (dify < 43) {
 					posPlayer2.y = posBox.y + 48;
 					Game::instance().setPosition2(posPlayer2);
-					Game::instance().enable_doubleJump(2);
 					Player_up = true;
 				}
 			}
