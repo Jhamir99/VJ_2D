@@ -66,7 +66,7 @@ private:
 	Player *player;
 	Player2 *player2;
 	Box* box;
-	float prev_time;
+	float prev_time, special_time;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;

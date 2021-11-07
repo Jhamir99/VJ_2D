@@ -53,6 +53,7 @@ void Scene::init()
 	initCredits();
 	initBackground();
 	currentTime = 0.0f;
+	special_time = 0.0f;
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 }
 
@@ -271,49 +272,50 @@ void Scene::update(int deltaTime)
 			}
 
 			//Touch cactus or fall to water
-			if (!godmode && (player->getPosition().y > 360 || player2 -> getPosition().y < 360 || touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition()))) {
+			if (player->getPosition().y > 360 || player2 -> getPosition().y < 360 || (!godmode && (touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())))) {
 				prev_time = currentTime;
 				playDeathSound();
 				reset_player();
 			}
 
 			//Jump Level & godmode
-			if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
+			if (Game::instance().getKey('g') && currentTime - special_time > DELAY) {
 				godmode = !godmode;
-				prev_time = currentTime;
+				player->setPosition(glm::vec2(player->getPosition().x, player->getPosition().y-3));
+				special_time = currentTime;
 			}
-			else if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('1') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 1;
 				initGame();
 			}
-			else if (Game::instance().getKey('2') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('2') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 2;
 				initGame();
 			}
-			else if (Game::instance().getKey('3') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('3') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 3;
 				initGame();
 			}
-			else if (Game::instance().getKey('4') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('4') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 4;
 				initGame();
 			}
-			else if (Game::instance().getKey('5') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('5') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 5;
 				initGame();
 			}
-			else if (Game::instance().getKey('6') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('6') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 6;
 				initGame();
 			}
-			else if (Game::instance().getKey('b') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('b') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			}
 

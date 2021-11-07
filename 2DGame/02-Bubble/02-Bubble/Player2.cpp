@@ -136,10 +136,6 @@ void Player2::update(int deltaTime)
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	if (!GodMode && posPlayer.y < 360) {
-		Game::instance().playDeathSound();
-		Game::instance().resetPlayer();
-	}
 }
 
 void Player2::update_win_animation(int deltaTime) {
