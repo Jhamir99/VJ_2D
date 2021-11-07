@@ -284,38 +284,31 @@ void Scene::update(int deltaTime)
 				player->setPosition(glm::vec2(player->getPosition().x, player->getPosition().y-3));
 				special_time = currentTime;
 			}
-			else if (Game::instance().getKey('1') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('1')) {
 				level = 1;
 				initGame();
 			}
-			else if (Game::instance().getKey('2') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('2')) {
 				level = 2;
 				initGame();
 			}
-			else if (Game::instance().getKey('3') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('3')) {
 				level = 3;
 				initGame();
 			}
-			else if (Game::instance().getKey('4') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('4')) {
 				level = 4;
 				initGame();
 			}
-			else if (Game::instance().getKey('5') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('5')) {
 				level = 5;
 				initGame();
 			}
-			else if (Game::instance().getKey('6') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('6')) {
 				level = 6;
 				initGame();
 			}
-			else if (Game::instance().getKey('b') && currentTime - special_time > DELAY) {
-				special_time = currentTime;
+			else if (Game::instance().getKey('b')) {
 				map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			}
 
