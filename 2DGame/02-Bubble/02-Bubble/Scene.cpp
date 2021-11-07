@@ -70,7 +70,7 @@ void Scene::initMenu() {
 
 void Scene::initInstructions() {
 	bInstructions = false;
-	texIns.loadFromFile("images/instructions.png", TEXTURE_PIXEL_FORMAT_RGB);
+	texIns.loadFromFile("images/instructions.jpg", TEXTURE_PIXEL_FORMAT_RGB);
 	instructions = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texIns, &texProgram);
 }
 
@@ -224,6 +224,16 @@ void Scene::update(int deltaTime)
 			}
 		}
 	}
+	else if (player_dead) {
+		player->update_death_animation(deltaTime);
+		player2->update_death_animation(deltaTime);
+
+		if (currentTime - prev_time > DELAY/2) {
+			PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+			player_dead = false;
+			initGame();
+		}
+	}
 	else {
 		if (!bMenu) {
 			player->update(deltaTime);
@@ -260,17 +270,16 @@ void Scene::update(int deltaTime)
 				flag_reverse->change_animation();
 			}
 
-			//Touch cactus
-			if (!godmode && touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())) {
+			//Touch cactus or fall to water
+			if (!godmode && (player->getPosition().y > 360 || player2 -> getPosition().y < 360 || touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition()))) {
+				prev_time = currentTime;
 				playDeathSound();
-				Game::instance().resetPlayer();
+				reset_player();
 			}
 
 			//Jump Level & godmode
 			if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
 				godmode = !godmode;
-				player->swapGodMode();
-				player2->swapGodMode();
 				prev_time = currentTime;
 			}
 			else if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
@@ -302,6 +311,10 @@ void Scene::update(int deltaTime)
 				prev_time = currentTime;
 				level = 6;
 				initGame();
+			}
+			else if (Game::instance().getKey('b') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			}
 
 		}
@@ -456,8 +469,7 @@ void Scene::showCredits()
 };
 
 void Scene::playDeathSound() {
-	PlaySound(TEXT("audio/oof.wav"), NULL, SND_FILENAME);
-	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+	PlaySound(TEXT("audio/oof.wav"), NULL, SND_ASYNC | SND_FILENAME);
 }
 
 void Scene::setPosition1(const glm::vec2& pos)
@@ -521,4 +533,9 @@ bool Scene::touch_cactus(glm::ivec2 posPlayer) {
 	}
 
 	return h && v;
+}
+
+void Scene::reset_player()
+{
+	player_dead = true;
 }

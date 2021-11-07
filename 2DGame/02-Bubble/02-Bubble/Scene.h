@@ -53,6 +53,8 @@ public:
 
 	bool touch_cactus(glm::ivec2 posPlayer);
 
+	void reset_player();
+
 private:
 	void initShaders();
 
@@ -73,7 +75,7 @@ private:
 	GameObj *arrow, *flag, *flag_reverse, *lever, *cactus, *cactusD, *tp, *tp2;
 	glm::ivec2 posLever, posTp;
 	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox, blever, lever_trigger, btp;
-	bool wait, tp_up, godmode = false;
+	bool wait, tp_up, player_dead, godmode = false;
 	int level;
 
 	//goal positions
