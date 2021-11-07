@@ -1,0 +1,28 @@
+TILEMAP
+40 22 							-- Size of tile map in tiles
+32 34 							-- Tile size & block size
+images/ground2.png 	-- Tilesheet
+2 2 								-- Number of tiles in tilesheet
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                        11              
+                        11              
+                        1111            
+         11111          1111            
+         1111111111111111111111         
+         3333333333333333333333         
+         33333          3333333         
+                             33         
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+
