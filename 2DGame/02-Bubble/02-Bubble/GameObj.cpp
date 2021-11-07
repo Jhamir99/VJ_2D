@@ -26,7 +26,7 @@ void GameObj::init_arrow(const glm::ivec2& tileMapPos, ShaderProgram& shaderProg
 	nButtons = 4;
 
 	//espai entre butons
-	spcButtons = 91;
+	spcButtons = 95;
 
 	spritesheet.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(1., 1.), &spritesheet, &shaderProgram);
