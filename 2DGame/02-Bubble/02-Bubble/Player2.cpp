@@ -14,7 +14,7 @@
 
 enum PlayerAnims
 {
-	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP
+	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP, WIN
 };
 
 
@@ -22,10 +22,11 @@ void Player2::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
 	bJumping = false;
 	GodMode = false;
+	bDoubleJump = false;
 
 	spritesheet.loadFromFile("images/drake2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.0833f, 0.125f), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(4);
+	sprite->setNumberAnimations(5);
 
 	sprite->setAnimationSpeed(STAND, 1);
 	sprite->addKeyframe(STAND, glm::vec2(0.9166f, 0.875f));
@@ -46,6 +47,11 @@ void Player2::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->addKeyframe(JUMP, glm::vec2(0.9166f, 0.5f));
 	sprite->addKeyframe(JUMP, glm::vec2(0.8333f, 0.5f));
 	sprite->addKeyframe(JUMP, glm::vec2(0.75f, 0.5f));
+
+	sprite->setAnimationSpeed(WIN, 6);
+	sprite->addKeyframe(WIN, glm::vec2(0.9166f, 0.875f));
+	sprite->addKeyframe(WIN, glm::vec2(0.8333f, 0.875f));
+	sprite->addKeyframe(WIN, glm::vec2(0.75f, 0.875f));
 
 
 
@@ -99,11 +105,19 @@ void Player2::update(int deltaTime)
 				Vjump = 0;
 
 			bJumping = !map->collisionJumpUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y, Vjump);
+
+			if (bDoubleJump && (Vjump < JUMP_SPEED - 14*JUMP_A) && Game::instance().getSpecialKey(GLUT_KEY_UP))
+			{
+				sprite->changeAnimation(STAND);
+				bDoubleJump = false;
+				Vjump = JUMP_SPEED;
+			}
 	}
 	else
 	{
 		posPlayer.y -= FALL_STEP;
-		map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y);
+		if(map->collisionMoveUp(posPlayer, glm::ivec2(48, 48), &posPlayer.y))
+			bDoubleJump = false;
 		if (Game::instance().getSpecialKey(GLUT_KEY_UP))
 		{
 			bJumping = true;
@@ -111,6 +125,8 @@ void Player2::update(int deltaTime)
 			startY = posPlayer.y;
 		}
 	}
+	if (bDoubleJump && sprite->animation() == STAND)
+		sprite->changeAnimation(WIN);
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
@@ -118,6 +134,12 @@ void Player2::update(int deltaTime)
 		Game::instance().playDeathSound();
 		Game::instance().resetPlayer();
 	}
+}
+
+void Player2::update_win_animation(int deltaTime) {
+	if (sprite->animation() != WIN)
+		sprite->changeAnimation(WIN);
+	sprite->update(deltaTime);
 }
 
 void Player2::render()
@@ -140,6 +162,10 @@ void Player2::setPosition(const glm::vec2& pos)
 void Player2::swapGodMode()
 {
 	GodMode = !GodMode;
+}
+
+void Player2::enable_doubleJump() {
+	bDoubleJump = true;
 }
 
 glm::ivec2 Player2::getPosition()

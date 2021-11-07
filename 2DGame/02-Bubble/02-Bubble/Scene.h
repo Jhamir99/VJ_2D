@@ -25,6 +25,7 @@ public:
 	void initMenu();
 	void initInstructions();
 	void initCredits();
+	void initBackground();
 	void initGame();
 	void update(int deltaTime);
 	void render();
@@ -43,6 +44,8 @@ public:
 
 	glm::ivec2 getPosPlayer1();
 	glm::ivec2 getPosPlayer2();
+
+	void enable_doubleJump(int pj);
 
 	bool goal();
 
@@ -65,10 +68,12 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-	Sprite *menu, *instructions, *credits;
-	Texture spritesheet, texHand, texIns, texCred;
-	GameObj *arrow, *flag, *flag_reverse, *cactus, *cactusD, *cactusL;
-	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox;
+	Sprite *menu, *instructions, *credits, *background;
+	Texture spritesheet, texHand, texIns, texCred, texbackground;
+	GameObj *arrow, *flag, *flag_reverse, *lever, *cactus, *cactusD, *cactusL;
+	glm::ivec2 posLever;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox, blever, lever_trigger;
+	bool wait = false;
 	int level;
 
 	//goal positions
