@@ -21,6 +21,8 @@ public:
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 
+	glm::ivec2 getPosition();
+
 private:
 
 	glm::ivec2 tileMapDispl, posBox;

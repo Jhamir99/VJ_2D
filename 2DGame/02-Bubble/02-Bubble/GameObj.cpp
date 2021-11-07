@@ -87,6 +87,82 @@ void GameObj::init_flag_reverse(const glm::ivec2& tileMapPos, ShaderProgram& sha
 	tileMapDispl = tileMapPos;
 }
 
+void GameObj::init_tp(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/tp.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.2), &spritesheet, &shaderProgram);
+
+	sprite->setNumberAnimations(2);
+
+	sprite->setAnimationSpeed(IDLE, 1);
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .8f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.25f, .8f));
+
+	sprite->setAnimationSpeed(LOWER, 8);
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .0f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .0f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .0f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .0f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .6f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .8f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.25f, .8f));
+
+
+	sprite->changeAnimation(IDLE);
+
+	tileMapDispl = tileMapPos;
+}
+
+void GameObj::init_tp2(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+{
+	spritesheet.loadFromFile("images/tp2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.25, 0.2), &spritesheet, &shaderProgram);
+
+	sprite->setNumberAnimations(2);
+
+	sprite->setAnimationSpeed(IDLE, 1);
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .8f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.25f, .0f));
+
+	sprite->setAnimationSpeed(LOWER, 8);
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .8f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .8f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .8f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .8f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .6f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .4f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.25f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.5f, .2f));
+	sprite->addKeyframe(LOWER, glm::vec2(0.75f, .2f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.0f, .0f));
+	sprite->addKeyframe(IDLE, glm::vec2(0.25f, .0f));
+
+
+	sprite->changeAnimation(IDLE);
+
+	tileMapDispl = tileMapPos;
+}
+
 void GameObj::init_lever(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
 	spritesheet.loadFromFile("images/lever.png", TEXTURE_PIXEL_FORMAT_RGBA);
