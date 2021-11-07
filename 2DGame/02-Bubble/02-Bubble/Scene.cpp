@@ -301,6 +301,7 @@ void Scene::render()
 		player->render();
 		player2->render();
 		flag->render();
+
 		flag_reverse->render();
 		if (bBox) box->render();
 
