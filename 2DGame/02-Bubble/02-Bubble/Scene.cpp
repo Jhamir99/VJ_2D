@@ -81,7 +81,7 @@ void Scene::initCredits() {
 }
 
 void Scene::initBackground() {
-	texbackground.loadFromFile("images/background3.jpg", TEXTURE_PIXEL_FORMAT_RGB);
+	texbackground.loadFromFile("images/background4.jpg", TEXTURE_PIXEL_FORMAT_RGB);
 	background = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texbackground, &texProgram);
 }
 
@@ -474,22 +474,28 @@ bool Scene::touch_cactus(glm::ivec2 posPlayer) {
 	switch (level) {
 		case 3:
 			for (glm::ivec2 pc : posCactusD) {
-				if(!h) h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x+48) < 0;
-				if(!v) v = (posPlayer.y) - (pc.y + 24) < 0;
+				h = v = false;
+				h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x+48) < 0;
+				v = (posPlayer.y) - (pc.y + 24) < 0;
+				if (h && v) break;
 			}
 			break;
 
 		case 4:
 			for (glm::ivec2 pc : posCactusL) {
-				if (!h) h = (posPlayer.x + 32) - (pc.x) > 0 && posPlayer.x - (pc.x + 48) < 0; 
-				if (!v) v = (posPlayer.y) - (pc.y + 24) < 0 && (posPlayer.y + 32) - (pc.y + 24) > 0;
+				h = v = false;
+				h = (posPlayer.x + 32) - (pc.x) > 0 && posPlayer.x - (pc.x + 48) < 0; 
+				v = (posPlayer.y) - (pc.y + 24) < 0 && (posPlayer.y + 32) - (pc.y + 24) > 0;
+				if (h && v) break;
 			}
 			break;
 
 		case 5:
 			for (glm::ivec2 pc : posCactus) {
-				if (!h) h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x + 48) < 0;
-				if (!v) v = (posPlayer.y) - (pc.y + 24) < 0;
+				h = v = false;
+				h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x + 48) < 0;
+				v = (posPlayer.y) - (pc.y + 24) < 0;
+				if (h && v) break;
 			}
 			break;
 	}
