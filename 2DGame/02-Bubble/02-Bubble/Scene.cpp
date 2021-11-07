@@ -11,14 +11,14 @@
 #define SCREEN_X 0
 #define SCREEN_Y 10
 
-#define INIT_PLAYER_X_TILES 20
+#define INIT_PLAYER_X_TILES 18
 #define INIT_PLAYER_Y_TILES 7
 
-#define INIT_PLAYER2_X_TILES 20
+#define INIT_PLAYER2_X_TILES 18
 #define INIT_PLAYER2_Y_TILES 14
 
 #define DELAY 1000
-#define LEVEL_MAX 5
+#define LEVEL_MAX 6
 
 Scene::Scene()
 {
@@ -59,7 +59,7 @@ void Scene::init()
 void Scene::initMenu() {
 	bMenu = true;
 	bArrow = true;
-	spritesheet.loadFromFile("images/menu.png", TEXTURE_PIXEL_FORMAT_RGB);
+	spritesheet.loadFromFile("images/menu.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	menu = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &spritesheet, &texProgram);
 
 	//texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -118,10 +118,32 @@ void Scene::initGame() {
 			box->setTileMap(map);
 			bBox = true;
 			break;
+		case 6:
+			box = new Box();
+			box->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			box->setPosition(glm::vec2(13 * map->getTileSize(), 8 * map->getTileSize()));
+			box->setTileMap(map);
+			bBox = true;
+
+			//tp
+			tp = new GameObj();
+			tp->init_tp(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			posTp = glm::vec2(10 * map->getTileSize(), 9 * map->getTileSize() + 4);
+			tp->setPosition(posTp);
+
+			tp2 = new GameObj();
+			tp2->init_tp2(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			tp2->setPosition(glm::vec2(15 * map->getTileSize(), 12 * map->getTileSize()-4));
+
+			btp = true;
+			tp_up = true;
+
+			break;
 		default:
 			bBox = false;
 			blever = false;
 			lever_trigger = false;
+			btp = false;
 	}
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
@@ -140,7 +162,7 @@ void Scene::initGame() {
 	posGoals2[1] = glm::ivec2(map->getTileSize() * 16, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
 	posGoals1[2] = glm::ivec2(map->getTileSize() * 27, map->getTileSize() * 8);
-	posGoals2[2] = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT - (map->getTileSize() * 11));
+	posGoals2[2] = glm::ivec2(map->getTileSize() * 27, SCREEN_HEIGHT - (map->getTileSize() * 10));
 
 	posGoals1[3] = glm::ivec2(map->getTileSize() * 20, map->getTileSize() * 4);
 	posGoals2[3] = glm::ivec2(map->getTileSize() * 28, SCREEN_HEIGHT - (map->getTileSize() * 4));
@@ -148,12 +170,14 @@ void Scene::initGame() {
 	posGoals1[4] = glm::ivec2(map->getTileSize() * 8, map->getTileSize() * 8);
 	posGoals2[4] = glm::ivec2(map->getTileSize() * 23, SCREEN_HEIGHT - (map->getTileSize() * 11));
 
+	posGoals1[5] = glm::ivec2(map->getTileSize() * 31, map->getTileSize() * 6);
+	posGoals2[5] = glm::ivec2(map->getTileSize() * 31, SCREEN_HEIGHT - (map->getTileSize() * 9));
+
 
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 23) + 24, (map->getTileSize() * 7) - 2));
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 24) + 24, (map->getTileSize() * 7) - 2));
 	posCactusD.push_back(glm::ivec2((map->getTileSize() * 25) + 24, (map->getTileSize() * 7) - 2));
 
-	posCactusL.push_back(glm::ivec2((map->getTileSize() * 18) + 16, (map->getTileSize() * 6)));
 
 	posCactus.push_back(glm::ivec2((map->getTileSize() * 19) + 24, (map->getTileSize() * 7) + 16));
 	posCactus.push_back(glm::ivec2((map->getTileSize() * 20) + 24, (map->getTileSize() * 7) + 16));
@@ -179,8 +203,7 @@ void Scene::initGame() {
 	cactusD = new GameObj();
 	cactusD->init_cactusD(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 
-	cactusL = new GameObj();
-	cactusL->init_cactusL(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	
 }
 
 void Scene::update(int deltaTime)
@@ -195,7 +218,10 @@ void Scene::update(int deltaTime)
 		if (currentTime - prev_time > DELAY) {
 			wait = false;
 			if (++level <= LEVEL_MAX) initGame();
-			else init();
+			else {
+				init();
+				showCredits();
+			}
 		}
 	}
 	else {
@@ -205,6 +231,21 @@ void Scene::update(int deltaTime)
 			flag->update_animation(deltaTime);
 			flag_reverse->update_animation(deltaTime);
 			if (bBox) box->update(deltaTime);
+			if (btp) {
+				tp->update_animation(deltaTime);
+				tp2->update_animation(deltaTime);
+				if (tp_up && aprox(posTp, box->getPosition())) {
+					tp->change_animation();
+					tp2->change_animation();
+					box->setPosition(glm::vec2(15 * map->getTileSize(), 13 * map->getTileSize()));
+					prev_time = currentTime;
+					tp_up = false;
+				}
+				else if (!tp_up && currentTime - prev_time > DELAY) {
+					tp->change_animation();
+					tp2->change_animation();
+					}
+			}
 			if (blever && !lever_trigger) 
 				if (aprox(posLever, getPosPlayer1())) {
 					lever->change_animation();
@@ -212,72 +253,63 @@ void Scene::update(int deltaTime)
 					lever_trigger = true;
 				}
 					
+			if (goal()) {
+				wait = true;
+				prev_time = currentTime;
+				flag->change_animation();
+				flag_reverse->change_animation();
+			}
+
+			//Touch cactus
+			if (!godmode && touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())) {
+				playDeathSound();
+				Game::instance().resetPlayer();
+			}
+
+			//Jump Level & godmode
+			if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
+				godmode = !godmode;
+				player->swapGodMode();
+				player2->swapGodMode();
+				prev_time = currentTime;
+			}
+			else if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 1;
+				initGame();
+			}
+			else if (Game::instance().getKey('2') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 2;
+				initGame();
+			}
+			else if (Game::instance().getKey('3') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 3;
+				initGame();
+			}
+			else if (Game::instance().getKey('4') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 4;
+				initGame();
+			}
+			else if (Game::instance().getKey('5') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 5;
+				initGame();
+			}
+			else if (Game::instance().getKey('6') && currentTime - prev_time > DELAY) {
+				prev_time = currentTime;
+				level = 6;
+				initGame();
+			}
+
 		}
 		if (bMenu) menu->update(deltaTime);
 		if (bArrow) arrow->update(deltaTime);
 		if (bCredits) credits->update(deltaTime);
 		if (bInstructions) instructions->update(deltaTime);
 
-		if (goal()) {
-			wait = true;
-			prev_time = currentTime;
-			flag->change_animation();
-			flag_reverse->change_animation();
-		}
-
-		if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
-			player->swapGodMode();
-			player2->swapGodMode();
-			prev_time = currentTime;
-		}else if (Game::instance().getKey('1')) {
-			level = 1;
-			initGame();
-		}else if (Game::instance().getKey('2')) {
-			level = 2;
-			initGame();
-		}
-		else if (Game::instance().getKey('3')) {
-			level = 3;
-			initGame();
-		}
-		else if (Game::instance().getKey('4')) {
-			level = 4;
-			initGame();
-		}
-		else if (Game::instance().getKey('5')) {
-			level = 5;
-			initGame();
-		}
-	}
-
-
-	//Jump Level
-	if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
-		level = 1;
-		initGame();
-	}
-	else if (Game::instance().getKey('2') && currentTime - prev_time > DELAY) {
-		level = 2;
-		initGame();
-	}
-	if (Game::instance().getKey('3') && currentTime - prev_time > DELAY) {
-		level = 3;
-		initGame();
-	}
-	else if (Game::instance().getKey('4') && currentTime - prev_time > DELAY) {
-		level = 4;
-		initGame();
-	}
-	if (Game::instance().getKey('5') && currentTime - prev_time > DELAY) {
-		level = 5;
-		initGame();
-	}
-
-
-	//Touch cactus
-	if (touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())) {
-		playDeathSound();
-		Game::instance().resetPlayer();
 	}
 
 }
@@ -304,20 +336,16 @@ void Scene::render()
 
 		flag_reverse->render();
 		if (bBox) box->render();
-
+		if (btp) {
+			tp->render();
+			tp2->render();
+		}
 
 		switch (level) {
 		case 3:
 			for (glm::ivec2 pc : posCactusD) {
 				cactusD->setPosition(pc);
 				cactusD->render();
-			}
-			break;
-
-		case 4:
-			for (glm::ivec2 pc : posCactusL) {
-				cactusL->setPosition(pc);
-				cactusL->render();
 			}
 			break;
 
@@ -429,6 +457,7 @@ void Scene::showCredits()
 
 void Scene::playDeathSound() {
 	PlaySound(TEXT("audio/oof.wav"), NULL, SND_FILENAME);
+	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
 }
 
 void Scene::setPosition1(const glm::vec2& pos)
@@ -462,7 +491,6 @@ bool Scene::goal() {
 	return aprox(getPosPlayer1(), posGoals1[level-1]) && aprox(getPosPlayer2(), posGoals2[level-1]);
 }
 
-
 bool Scene::aprox(glm::ivec2 posPlayer, glm::ivec2 posGoal) {
 	bool h = (posPlayer.x - posGoal.x) >= 0 && (posPlayer.x - posGoal.x) < map->getTileSize();
 	bool v = (posPlayer.y - posGoal.y) >= 0 && (posPlayer.y - posGoal.y) < map->getTileSize();
@@ -482,20 +510,11 @@ bool Scene::touch_cactus(glm::ivec2 posPlayer) {
 			}
 			break;
 
-		case 4:
-			for (glm::ivec2 pc : posCactusL) {
-				h = v = false;
-				h = (posPlayer.x + 32) - (pc.x) > 0 && posPlayer.x - (pc.x + 48) < 0; 
-				v = (posPlayer.y) - (pc.y + 24) < 0 && (posPlayer.y + 32) - (pc.y + 24) > 0;
-				if (h && v) break;
-			}
-			break;
-
 		case 5:
 			for (glm::ivec2 pc : posCactus) {
 				h = v = false;
 				h = (posPlayer.x + 32) - pc.x > 0 && posPlayer.x - (pc.x + 48) < 0;
-				v = (posPlayer.y) - (pc.y + 24) < 0;
+				v = (posPlayer.y + 32) - (pc.y + 16) > 0 && (posPlayer.y + 32) - (pc.y + 16) < 32;
 				if (h && v) break;
 			}
 			break;

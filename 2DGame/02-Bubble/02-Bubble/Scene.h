@@ -70,10 +70,10 @@ private:
 	glm::mat4 projection;
 	Sprite *menu, *instructions, *credits, *background;
 	Texture spritesheet, texHand, texIns, texCred, texbackground;
-	GameObj *arrow, *flag, *flag_reverse, *lever, *cactus, *cactusD, *cactusL;
-	glm::ivec2 posLever;
-	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox, blever, lever_trigger;
-	bool wait = false;
+	GameObj *arrow, *flag, *flag_reverse, *lever, *cactus, *cactusD, *tp, *tp2;
+	glm::ivec2 posLever, posTp;
+	bool bMenu, bArrow, bInstructions, bCredits, bMusic = false, bBox, blever, lever_trigger, btp;
+	bool wait, tp_up, godmode = false;
 	int level;
 
 	//goal positions

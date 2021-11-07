@@ -23,33 +23,33 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	GodMode = false;
 	bDoubleJump = false;
 	spritesheet.loadFromFile("images/drake.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.0833, 0.125), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.083332, 0.125), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(5);
 
 	sprite->setAnimationSpeed(STAND, 1);
 	sprite->addKeyframe(STAND, glm::vec2(0.75f, 0.5f));
-	sprite->addKeyframe(STAND, glm::vec2(0.8333f, 0.5f));
-	sprite->addKeyframe(STAND, glm::vec2(0.9166f, 0.5f));
+	sprite->addKeyframe(STAND, glm::vec2(0.083332f, 0.5f));
+	sprite->addKeyframe(STAND, glm::vec2(0.916665f, 0.5f));
 
 	sprite->setAnimationSpeed(MOVE_LEFT, 8);
 	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.75f, 0.625f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.8333f, 0.625f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.9166f, 0.625f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.083332f, 0.625f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.916665f, 0.625f));
 
 	sprite->setAnimationSpeed(MOVE_RIGHT, 8);
 	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.75f, 0.75f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.8333f, 0.75f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.9166f, 0.75f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.083332f, 0.75f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.916665f, 0.75f));
 
 	sprite->setAnimationSpeed(JUMP, 10);
 	sprite->addKeyframe(JUMP, glm::vec2(0.75f, 0.875f));
-	sprite->addKeyframe(JUMP, glm::vec2(0.8333f, 0.875f));
-	sprite->addKeyframe(JUMP, glm::vec2(0.9166f, 0.875f));
+	sprite->addKeyframe(JUMP, glm::vec2(0.083332f, 0.875f));
+	sprite->addKeyframe(JUMP, glm::vec2(0.916665f, 0.875f));
 
 	sprite->setAnimationSpeed(WIN, 6);
 	sprite->addKeyframe(WIN, glm::vec2(0.75f, 0.5f));
-	sprite->addKeyframe(WIN, glm::vec2(0.8333f, 0.5f));
-	sprite->addKeyframe(WIN, glm::vec2(0.9166f, 0.5f));
+	sprite->addKeyframe(WIN, glm::vec2(0.083332f, 0.5f));
+	sprite->addKeyframe(WIN, glm::vec2(0.916665f, 0.5f));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;

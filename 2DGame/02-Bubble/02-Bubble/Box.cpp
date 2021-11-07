@@ -221,3 +221,8 @@ void Box::setPosition(const glm::vec2& pos)
 	posBox = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBox.x), float(tileMapDispl.y + posBox.y)));
 }
+
+glm::ivec2 Box::getPosition()
+{
+	return posBox;
+}
