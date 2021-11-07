@@ -13,7 +13,7 @@
 
 enum PlayerAnims
 {
-	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP, WIN
+	STAND, MOVE_LEFT, MOVE_RIGHT, JUMP, WIN, DEATH
 };
 
 
@@ -23,33 +23,40 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	GodMode = false;
 	bDoubleJump = false;
 	spritesheet.loadFromFile("images/drake.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.083332, 0.125), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(5);
+	sprite = Sprite::createSprite(glm::ivec2(48, 48), glm::vec2(0.25, 0.125), &spritesheet, &shaderProgram);
+	sprite->setNumberAnimations(6);
 
 	sprite->setAnimationSpeed(STAND, 1);
-	sprite->addKeyframe(STAND, glm::vec2(0.75f, 0.5f));
-	sprite->addKeyframe(STAND, glm::vec2(0.083332f, 0.5f));
-	sprite->addKeyframe(STAND, glm::vec2(0.916665f, 0.5f));
+	sprite->addKeyframe(STAND, glm::vec2(0.0f, 0.5f));
+	sprite->addKeyframe(STAND, glm::vec2(0.25f, 0.5f));
+	sprite->addKeyframe(STAND, glm::vec2(0.5, 0.5f));
 
 	sprite->setAnimationSpeed(MOVE_LEFT, 8);
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.75f, 0.625f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.083332f, 0.625f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.916665f, 0.625f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.0f, 0.625f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.25f, 0.625f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.5f, 0.625f));
 
 	sprite->setAnimationSpeed(MOVE_RIGHT, 8);
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.75f, 0.75f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.083332f, 0.75f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.916665f, 0.75f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.0f, 0.75f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.25f, 0.75f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.5f, 0.75f));
 
 	sprite->setAnimationSpeed(JUMP, 10);
-	sprite->addKeyframe(JUMP, glm::vec2(0.75f, 0.875f));
-	sprite->addKeyframe(JUMP, glm::vec2(0.083332f, 0.875f));
-	sprite->addKeyframe(JUMP, glm::vec2(0.916665f, 0.875f));
+	sprite->addKeyframe(JUMP, glm::vec2(0.0f, 0.875f));
+	sprite->addKeyframe(JUMP, glm::vec2(0.25f, 0.875f));
+	sprite->addKeyframe(JUMP, glm::vec2(0.5f, 0.875f));
 
 	sprite->setAnimationSpeed(WIN, 6);
-	sprite->addKeyframe(WIN, glm::vec2(0.75f, 0.5f));
-	sprite->addKeyframe(WIN, glm::vec2(0.083332f, 0.5f));
-	sprite->addKeyframe(WIN, glm::vec2(0.916665f, 0.5f));
+	sprite->addKeyframe(WIN, glm::vec2(0.0f, 0.5f));
+	sprite->addKeyframe(WIN, glm::vec2(0.25f, 0.5f));
+	sprite->addKeyframe(WIN, glm::vec2(0.5f, 0.5f));
+
+	sprite->setAnimationSpeed(DEATH, 8);
+	sprite->addKeyframe(DEATH, glm::vec2(0.5f, 0.5f));
+	sprite->addKeyframe(DEATH, glm::vec2(0.75f, 0.5f));
+	sprite->addKeyframe(DEATH, glm::vec2(0.75f, 0.625f));
+	sprite->addKeyframe(DEATH, glm::vec2(0.75f, 0.625f));
+	sprite->addKeyframe(DEATH, glm::vec2(0.75f, 0.625f));
 		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
@@ -128,10 +135,7 @@ void Player::update(int deltaTime)
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 
-	if (!GodMode && posPlayer.y > 360) {
-		Game::instance().playDeathSound();
-		Game::instance().resetPlayer();		
-	}
+	
 }
 
 void Player::update_win_animation(int deltaTime) {
@@ -140,6 +144,12 @@ void Player::update_win_animation(int deltaTime) {
 	sprite->update(deltaTime);
 }
 
+void Player::update_death_animation(int deltaTime)
+{
+	if (sprite->animation() != DEATH)
+		sprite->changeAnimation(DEATH);
+	sprite->update(deltaTime);
+}
 
 void Player::render()
 {
@@ -156,11 +166,6 @@ void Player::setPosition(const glm::vec2 &pos)
 	posPlayer = pos;
 	bJumping = false;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-}
-
-void Player::swapGodMode()
-{
-	GodMode = !GodMode;
 }
 
 void Player::enable_doubleJump() {

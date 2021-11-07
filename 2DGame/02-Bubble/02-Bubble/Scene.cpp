@@ -53,6 +53,7 @@ void Scene::init()
 	initCredits();
 	initBackground();
 	currentTime = 0.0f;
+	special_time = 0.0f;
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 }
 
@@ -70,7 +71,7 @@ void Scene::initMenu() {
 
 void Scene::initInstructions() {
 	bInstructions = false;
-	texIns.loadFromFile("images/instructions.png", TEXTURE_PIXEL_FORMAT_RGB);
+	texIns.loadFromFile("images/instructions.jpg", TEXTURE_PIXEL_FORMAT_RGB);
 	instructions = Sprite::createSprite(glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT), glm::vec2(1.0, 1.0), &texIns, &texProgram);
 }
 
@@ -224,6 +225,16 @@ void Scene::update(int deltaTime)
 			}
 		}
 	}
+	else if (player_dead) {
+		player->update_death_animation(deltaTime);
+		player2->update_death_animation(deltaTime);
+
+		if (currentTime - prev_time > DELAY/2) {
+			PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+			player_dead = false;
+			initGame();
+		}
+	}
 	else {
 		if (!bMenu) {
 			player->update(deltaTime);
@@ -260,48 +271,52 @@ void Scene::update(int deltaTime)
 				flag_reverse->change_animation();
 			}
 
-			//Touch cactus
-			if (!godmode && touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())) {
+			//Touch cactus or fall to water
+			if (player->getPosition().y > 360 || player2 -> getPosition().y < 360 || (!godmode && (touch_cactus(player->getPosition()) || touch_cactus(player2->getPosition())))) {
+				prev_time = currentTime;
 				playDeathSound();
-				Game::instance().resetPlayer();
+				reset_player();
 			}
 
 			//Jump Level & godmode
-			if (Game::instance().getKey('g') && currentTime - prev_time > DELAY) {
+			if (Game::instance().getKey('g') && currentTime - special_time > DELAY) {
 				godmode = !godmode;
-				player->swapGodMode();
-				player2->swapGodMode();
-				prev_time = currentTime;
+				player->setPosition(glm::vec2(player->getPosition().x, player->getPosition().y-3));
+				special_time = currentTime;
 			}
-			else if (Game::instance().getKey('1') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('1') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 1;
 				initGame();
 			}
-			else if (Game::instance().getKey('2') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('2') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 2;
 				initGame();
 			}
-			else if (Game::instance().getKey('3') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('3') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 3;
 				initGame();
 			}
-			else if (Game::instance().getKey('4') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('4') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 4;
 				initGame();
 			}
-			else if (Game::instance().getKey('5') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('5') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 5;
 				initGame();
 			}
-			else if (Game::instance().getKey('6') && currentTime - prev_time > DELAY) {
-				prev_time = currentTime;
+			else if (Game::instance().getKey('6') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
 				level = 6;
 				initGame();
+			}
+			else if (Game::instance().getKey('b') && currentTime - special_time > DELAY) {
+				special_time = currentTime;
+				map->destroy_barrier(glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			}
 
 		}
@@ -456,8 +471,7 @@ void Scene::showCredits()
 };
 
 void Scene::playDeathSound() {
-	PlaySound(TEXT("audio/oof.wav"), NULL, SND_FILENAME);
-	PlaySound(TEXT("audio/song.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+	PlaySound(TEXT("audio/oof.wav"), NULL, SND_ASYNC | SND_FILENAME);
 }
 
 void Scene::setPosition1(const glm::vec2& pos)
@@ -521,4 +535,9 @@ bool Scene::touch_cactus(glm::ivec2 posPlayer) {
 	}
 
 	return h && v;
+}
+
+void Scene::reset_player()
+{
+	player_dead = true;
 }

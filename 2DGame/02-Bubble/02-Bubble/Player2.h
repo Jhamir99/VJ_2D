@@ -17,12 +17,11 @@ public:
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
 	void update_win_animation(int deltaTime);
+	void update_death_animation(int deltaTime);
 	void render();
 
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
-
-	void swapGodMode();
 
 	void enable_doubleJump();
 
