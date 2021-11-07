@@ -66,7 +66,7 @@ void Scene::initMenu() {
 	//texHand.loadFromFile("images/pointer.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	arrow = new GameObj();
 	arrow->init_arrow(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	arrow->setPosition(glm::vec2(13 * map->getTileSize(), (11 * map->getTileSize())-68));
+	arrow->setPosition(glm::vec2(14 * map->getTileSize(), (12 * map->getTileSize())-68));
 }
 
 void Scene::initInstructions() {
